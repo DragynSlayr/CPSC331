@@ -1,3 +1,8 @@
+// Name: 		Inderpreet Dhillon
+// UCID:  		10159608
+// Class:  		CPSC 331
+// Purpose:		This program is capable of adding/subtracting very large numbers as well as identifying the the larger of the 2
+
 import java.util.Scanner;
 
 public class Main {
@@ -148,11 +153,13 @@ public class Main {
 	/*
 	 * Calculates the sum between num1 and num2
 	 * 
-	 * Pre-Condition:
+	 * Pre-Condition: 
+	 * ~ integer1, decimal1, integer2, decimal2 are declared and have values
+	 * ~ sumInteger, sumDecimal have been declared but have no values
 	 * 
-	 * 
-	 * Post-Condition:
-	 * 
+	 * Post-Condition: 
+	 * ~ integer1, decimal1, integer2, decimal2 have not changed values
+	 * ~ sumInteger, sumDecimal have been given values
 	 */
 	private static void calculateSum() {
 		// Concatenate both parts of both strings
@@ -207,10 +214,12 @@ public class Main {
 	 * Finds the difference between the bigger number and the smaller number
 	 * 
 	 * Pre-Condition: 
-	 * 
+	 * ~ biggerInteger, biggerDecimal, smallerInteger, smallerDecimal are declared and have values
+	 * ~ differenceInteger, differenceDecimal have been declared but have no values
 	 * 
 	 * Post-Condition: 
-	 * 
+	 * ~ biggerInteger, biggerDecimal, smallerInteger, smallerDecimal have not changed values
+	 * ~ differenceInteger, differenceDecimal have been given values
 	 */
 	private static void calculateDifference() {
 		// Concatenate both parts of both strings
