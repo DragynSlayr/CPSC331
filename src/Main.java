@@ -75,19 +75,25 @@ public class Main {
 		decimal2 = num2.substring(idx2 + 1, num2.length());
 
 		// Make both integer strings the same length by prepending zeroes
-		integer1 = padString(integer1, (short) integer2.length(), true);
-		integer2 = padString(integer2, (short) integer1.length(), true);
-
+		if (integer1.length() < integer2.length()) {
+			integer1 = padString(integer1, (short) integer2.length(), true);
+		} else if (integer2.length() < integer1.length()) {
+			integer2 = padString(integer2, (short) integer1.length(), true);
+		}
+		
 		// Make both decimal strings the same length by appending zeroes
-		decimal1 = padString(decimal1, (short) decimal2.length(), false);
-		decimal2 = padString(decimal2, (short) decimal1.length(), false);
+		if (decimal1.length() < decimal2.length()) {
+			decimal1 = padString(decimal1, (short) decimal2.length(), false);
+		} else if (decimal2.length() < decimal1.length()) {
+			decimal2 = padString(decimal2, (short) decimal1.length(), false);
+		}
 	}
 
 	/*
 	 * Finds the larger of num1, num2
 	 * 
 	 * Pre-Condition:
-	 * ~ num1, num2 have values
+	 * ~ num1, num2, integer1, integer2, decimal1, decimal2 have values
 	 * ~ larger, biggerInteger, biggerDecimal, smallerInteger, smallerDecimal have been declared but not initialized
 	 * 
 	 * Post-Condition:
