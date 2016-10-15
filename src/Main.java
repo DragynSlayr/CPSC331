@@ -39,7 +39,7 @@ public class Main {
 	 * ~ num1, num2, integer1, decimal1, integer2, decimal2 have been declared but not initialized
 	 * 
 	 * Post-Condition: 
-	 * ~ num1, num2 have the users values
+	 * ~ num1, num2 have the user's values
 	 * ~ integer1, integer2 have the content of respective numbers before the decimal 
 	 * ~ decimal1, decimal2 have the content of respective numbers after the decimal 
 	 * ~ integer1, integer2 have the same length
