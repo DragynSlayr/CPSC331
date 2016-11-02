@@ -12,14 +12,14 @@ public class Main {
 
 	// Declare global variables for storing results and intermediate values
 	private static String num1, num2, product;
-	private static LinkedList<String> intermediateStack, finalStack;
+	private static LinkedList<String> intermediateQueue;
 
 	public static void main(String[] args) {
 		// Get 2 input strings from the use that represent numbers
 		getInput();
 
-		// Create a Date object that represents when the program started
-		Date start = new Date();
+		// Get current time at the start of the functions
+		long startTime = System.currentTimeMillis();
 
 		// Calculate the product of the 2 numbers
 		getProduct();
@@ -30,11 +30,11 @@ public class Main {
 		// Prints the intermediate products
 		printIntermediates();
 
-		// Create a Date object that represents when the program ended
-		Date end = new Date();
+		// Get current time after running functions
+		long endTime = System.currentTimeMillis();
 
 		// Print total execution time
-		System.out.printf("Total Time: %dms\n", end.getTime() - start.getTime());
+		System.out.printf("Total Time: %dms\n", endTime - startTime);
 	}
 
 	/*
@@ -66,80 +66,17 @@ public class Main {
 	 * Gets the product of num1 and num2
 	 * 
 	 * Pre-Condition:
-	 * ~ intermediateStack, finalStack, product have been declared
+	 * ~ intermediateQueue, product have been declared
 	 * ~ num1, num2 have values
 	 * 
 	 * Post-Condition:
-	 * ~ finalStack contains all intermediates
-	 * ~ intermediateStack is empty
-	 * ~ product is the sum of intermediateStack
+	 * ~ intermediateQueue contains all intermediates
+	 * ~ product is the sum of intermediates
 	 * ~ num1, num2 have not been changed
 	 */
 	private static void getProduct() {
-		// Multiply the numbers and find intermediates
-		getIntermediates();
-
-		// Sum all the intermediate to find final product
-		sumIntermediates();
-	}
-
-	/*
-	 * Prints the product
-	 * 
-	 * Pre-Condition: 
-	 * ~ product has been declared and has a value
-	 * 
-	 * Post-Condition:
-	 * ~ product has not been changed
-	 * ~ product has been printed to the screen
-	 */
-	private static void printResults() {
-		// Print the product
-		System.out.print("Results:\nProduct: ");
-		System.out.println(product);
-	}
-
-	/*
-	 * Prints all the intermediate product
-	 * 
-	 * Pre-Condition:
-	 * ~ finalStack has been declared and has values
-	 * 
-	 * Post-Condition:
-	 * ~ finalStack is empty
-	 * ~ all elements from finalStack are printed
-	 */
-	private static void printIntermediates() {
-		// Print the intermediate results
-		System.out.println("Intermediate Calculations:");
-
-		// Keep track of current index for printing
-		short index = 1;
-
-		// Loop until the stack is empty
-		while (!finalStack.isEmpty()) {
-			// Print the index and the element from the top of the stack
-			System.out.printf("%d) %s\n", index, finalStack.pop());
-
-			// Increment index
-			index++;
-		}
-	}
-
-	/*
-	 * Calculates the intermediate products for the multiplication of num1 and num2
-	 * 
-	 * Pre-Condition:
-	 * ~ intermediateStack has been declared
-	 * ~ num1, num2 have values
-	 * 
-	 * Post-Condition:
-	 * ~ num1, num2 have not been changed
-	 * ~ intermediateStack contains all intermediates
-	 */
-	private static void getIntermediates() {
-		// Initialize stack for intermediates
-		intermediateStack = new LinkedList<String>();
+		// Initialize queue for intermediates
+		intermediateQueue = new LinkedList<String>();
 
 		// Initialize index for second number
 		short num2Index = (short) (num2.length() - 1);
@@ -191,9 +128,21 @@ public class Main {
 			// Reset carry
 			carry = 0;
 
-			// Push intermediate to the top of the stack
-			intermediateStack.push(intermediate);
+			// Add intermediate to the end of the queue
+			intermediateQueue.add(intermediate);
 
+			// Check if product has a value
+			if (product == null) {
+				// Assign intermediate to product
+				product = intermediate;
+			} else {
+				// Add zeroes to the front of product to match length of intermediate
+				String padded = padString(product, (short) intermediate.length());
+				
+				// Sum the intermediate and padded product to get the new product
+				product = sumNumbers(padded, intermediate);
+			}
+			
 			// Reset intermediate
 			intermediate = "";
 
@@ -202,6 +151,7 @@ public class Main {
 
 			// Loop until intermediate length is the same as zeroes
 			while (intermediate.length() != zeroes) {
+				
 				// Append 0 to intermediate
 				intermediate += "0";
 			}
@@ -212,41 +162,45 @@ public class Main {
 	}
 
 	/*
-	 * Sums all elements of the intermediateStack
+	 * Prints the product
 	 * 
-	 * Pre-Condition:
-	 * ~ finalStack, product have been declared
-	 * ~ intermediateStack has been declared and contains values
+	 * Pre-Condition: 
+	 * ~ product has been declared and has a value
 	 * 
 	 * Post-Condition:
-	 * ~ finalStack contains all intermediates
-	 * ~ intermediateStack is empty
-	 * ~ product is the sum of intermediateStack
+	 * ~ product has not been changed
+	 * ~ product has been printed to the screen
 	 */
-	private static void sumIntermediates() {
-		// Initialize stack for final printing
-		finalStack = new LinkedList<String>();
+	private static void printResults() {
+		// Print the product
+		System.out.print("Results:\nProduct: ");
+		System.out.println(product);
+	}
 
-		// Set product to the top of the intermediate
-		product = intermediateStack.pop();
+	/*
+	 * Prints all the intermediate product
+	 * 
+	 * Pre-Condition:
+	 * ~ intermediateQueue has been declared and has values
+	 * 
+	 * Post-Condition:
+	 * ~ intermediateQueue is empty
+	 * ~ all elements from intermediateQueue are printed
+	 */
+	private static void printIntermediates() {
+		// Print the intermediate results
+		System.out.println("Intermediate Calculations:");
 
-		// Push the intermediate to the top of final stack
-		finalStack.push(product);
+		// Keep track of current index for printing
+		short index = 1;
 
-		// Loop until the intermediate stack is empty
-		while (!intermediateStack.isEmpty()) {
+		// Loop until the queue is empty
+		while (!intermediateQueue.isEmpty()) {
+			// Print the index and the element from the front of the queue
+			System.out.printf("%d) %s\n", index, intermediateQueue.pop());
 
-			// Get the next intermediate
-			String smaller = intermediateStack.pop();
-
-			// Put the intermediate on the final stack
-			finalStack.push(smaller);
-
-			// Pad the string to the same length as product
-			String temp = padString(smaller, (short) product.length());
-
-			// Add product and temp to get the new product
-			product = sumNumbers(product, temp);
+			// Increment index
+			index++;
 		}
 	}
 
