@@ -167,16 +167,16 @@ public class Main {
 				short b = (short) Character.getNumericValue(num2.charAt(num2Index));
 
 				// Multiply the numbers and add the carry
-				short c = (short) ((a * b) + carry);
+				short result = (short) ((a * b) + carry);
 
 				// Adjust carry to be 0 or the first digit of c
-				carry = (short) (c / 10);
+				carry = (short) (result / 10);
 
 				// Adjust c to be between 0 and 9
-				c = (short) (c % 10);
+				result = (short) (result % 10);
 
 				// Prepend c to intermediate
-				intermediate = c + intermediate;
+				intermediate = result + intermediate;
 
 				// Decrement num1Index
 				num1Index--;
@@ -301,16 +301,16 @@ public class Main {
 			short b = (short) Character.getNumericValue(s2.charAt(index));
 
 			// Add integers and carry
-			short c = (short) (a + b + carry);
+			short result = (short) (a + b + carry);
 
 			// Adjust carry to be 0 or the first digit of c
-			carry = (short) (c / 10);
+			carry = (short) (result / 10);
 
 			// Adjust c to be between 0 and 9
-			c = (short) (c % 10);
+			result = (short) (result % 10);
 
 			// Prepend c to sum
-			sum = c + sum;
+			sum = result + sum;
 
 			// Decrement index
 			index--;
