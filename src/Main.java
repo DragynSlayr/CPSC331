@@ -37,6 +37,15 @@ public class Main {
 		System.out.printf("Total Time: %dms\n", end.getTime() - start.getTime());
 	}
 
+	/*
+	 * Gets 2 strings from the user, these represent positive integers
+	 * 
+	 * Pre-Condition:
+	 * ~ num1, num2 have been declared but not initialized
+	 * 
+	 * Post-Condition:
+	 * ~ num1, num2 have the user's values
+	 */
 	private static void getInput() {
 		// Declare Scanner object for taking input
 		Scanner keyb = new Scanner(System.in);
@@ -53,6 +62,19 @@ public class Main {
 		keyb.close();
 	}
 
+	/*
+	 * Gets the product of num1 and num2
+	 * 
+	 * Pre-Condition:
+	 * ~ intermediateStack, finalStack, product have been declared
+	 * ~ num1, num2 have values
+	 * 
+	 * Post-Condition:
+	 * ~ finalStack contains all intermediates
+	 * ~ intermediateStack is empty
+	 * ~ product is the sum of intermediateStack
+	 * ~ num1, num2 have not been changed
+	 */
 	private static void getProduct() {
 		// Multiply the numbers and find intermediates
 		getIntermediates();
@@ -61,12 +83,32 @@ public class Main {
 		sumIntermediates();
 	}
 
+	/*
+	 * Prints the product
+	 * 
+	 * Pre-Condition: 
+	 * ~ product has been declared and has a value
+	 * 
+	 * Post-Condition:
+	 * ~ product has not been changed
+	 * ~ product has been printed to the screen
+	 */
 	private static void printResults() {
 		// Print the product
 		System.out.print("Results:\nProduct: ");
 		System.out.println(product);
 	}
 
+	/*
+	 * Prints all the intermediate product
+	 * 
+	 * Pre-Condition:
+	 * ~ finalStack has been declared and has values
+	 * 
+	 * Post-Condition:
+	 * ~ finalStack is empty
+	 * ~ all elements from finalStack are printed
+	 */
 	private static void printIntermediates() {
 		// Print the intermediate results
 		System.out.println("Intermediate Calculations:");
@@ -84,6 +126,17 @@ public class Main {
 		}
 	}
 
+	/*
+	 * Calculates the intermediate products for the multiplication of num1 and num2
+	 * 
+	 * Pre-Condition:
+	 * ~ intermediateStack has been declared
+	 * ~ num1, num2 have values
+	 * 
+	 * Post-Condition:
+	 * ~ num1, num2 have not been changed
+	 * ~ intermediateStack contains all intermediates
+	 */
 	private static void getIntermediates() {
 		// Initialize stack for intermediates
 		intermediateStack = new LinkedList<String>();
@@ -158,6 +211,18 @@ public class Main {
 		}
 	}
 
+	/*
+	 * Sums all elements of the intermediateStack
+	 * 
+	 * Pre-Condition:
+	 * ~ finalStack, product have been declared
+	 * ~ intermediateStack has been declared and contains values
+	 * 
+	 * Post-Condition:
+	 * ~ finalStack contains all intermediates
+	 * ~ intermediateStack is empty
+	 * ~ product is the sum of intermediateStack
+	 */
 	private static void sumIntermediates() {
 		// Initialize stack for final printing
 		finalStack = new LinkedList<String>();
@@ -185,6 +250,18 @@ public class Main {
 		}
 	}
 
+	/*
+	 * Adds zero padding to the front of a string
+	 * 
+	 * Pre-Condition:
+	 * ~ s is a String
+	 * ~ length is a short
+	 * 
+	 * Post-Condition:
+	 * ~ s is unchanged
+	 * ~ length is unchanged
+	 * ~ a padded copy of s is returned
+	 */
 	private static String padString(String s, short length) {
 		// Loop until length of s == length
 		while (s.length() < length) {
@@ -196,6 +273,16 @@ public class Main {
 		return s;
 	}
 
+	/*
+	 * Sums 2 numbers
+	 * 
+	 * Pre-Condition:
+	 * ~ s1, s2 are Strings representing positive integers
+	 * 
+	 * Post-Condition:
+	 * ~ s1, s2 have not changed values
+	 * ~ the sum of s1 and s2 is returned
+	 */
 	private static String sumNumbers(String s1, String s2) {
 		// Initialize a string for the sum
 		String sum = "";
