@@ -201,7 +201,7 @@ public class Main {
 	}
 
 	/*
-	 * Adds zero padding to the front of a string
+	 * Adds zero padding to the front of a string, modified from assignment 1
 	 * 
 	 * Pre-Condition:
 	 * ~ s is a String
