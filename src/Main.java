@@ -4,7 +4,6 @@
 // Class:  		CPSC 331
 // Purpose:		This program is capable of multiplying 2 numbers and displaying their product as well as intermediate products
 
-import java.util.Date;
 import java.util.LinkedList;
 import java.util.Scanner;
 
@@ -91,13 +90,13 @@ public class Main {
 		String intermediate = "";
 
 		// Loop until num2Index < 0
-		while (num2Index >= 0) {
+		while (num2Index > -1) {
 
 			// Initialize index for first number
 			short num1Index = (short) (num1.length() - 1);
 
 			// Loop until num1Index < 0
-			while (num1Index >= 0) {
+			while (num1Index > -1) {
 
 				// Get integer value of each character in the strings
 				short a = (short) Character.getNumericValue(num1.charAt(num1Index));
@@ -149,12 +148,8 @@ public class Main {
 			// Increment zeroes
 			zeroes++;
 
-			// Loop until intermediate length is the same as zeroes
-			while (intermediate.length() != zeroes) {
-				
-				// Append 0 to intermediate
-				intermediate += "0";
-			}
+			// Make intermediate the same length as zeroes
+			intermediate = padString(intermediate, zeroes);
 
 			// Decrement num2Index
 			num2Index--;
@@ -196,6 +191,7 @@ public class Main {
 
 		// Loop until the queue is empty
 		while (!intermediateQueue.isEmpty()) {
+			
 			// Print the index and the element from the front of the queue
 			System.out.printf("%d) %s\n", index, intermediateQueue.pop());
 
@@ -219,6 +215,7 @@ public class Main {
 	private static String padString(String s, short length) {
 		// Loop until length of s == length
 		while (s.length() < length) {
+			
 			// Prepend 0 to s
 			s = "0" + s;
 		}
@@ -228,10 +225,11 @@ public class Main {
 	}
 
 	/*
-	 * Sums 2 numbers
+	 * Sums 2 numbers, similar to my assignment 1
 	 * 
 	 * Pre-Condition:
 	 * ~ s1, s2 are Strings representing positive integers
+	 * ~ s1, s2 have the same length
 	 * 
 	 * Post-Condition:
 	 * ~ s1, s2 have not changed values
@@ -248,7 +246,7 @@ public class Main {
 		short carry = 0;
 
 		// Loop until index < 0
-		while (index >= 0) {
+		while (index > -1) {
 
 			// Get integer value of character at index from both strings
 			short a = (short) Character.getNumericValue(s1.charAt(index));
