@@ -1,4 +1,4 @@
-package assignments.as2;
+package assignments;
 
 // Name: 		Inderpreet Dhillon
 // UCID:  		10159608
@@ -8,7 +8,7 @@ package assignments.as2;
 import java.util.LinkedList;
 import java.util.Scanner;
 
-public class Main {
+public class Multiplier {
 
 	// Declare global variables for storing results and intermediate values
 	private static String num1, num2, product;

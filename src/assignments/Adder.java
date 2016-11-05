@@ -1,4 +1,4 @@
-package assignments.as1;
+package assignments;
 // Name: 		Inderpreet Dhillon
 // UCID:  		10159608
 // Class:  		CPSC 331
@@ -6,7 +6,7 @@ package assignments.as1;
 
 import java.util.Scanner;
 
-public class Main {
+public class Adder {
 
 	// Declare global variables for storing different results and intermediate values
 	private static String num1, num2, larger;
