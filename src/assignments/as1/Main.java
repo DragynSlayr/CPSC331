@@ -1,4 +1,4 @@
-package assignments;
+package assignments.as1;
 // Name: 		Inderpreet Dhillon
 // UCID:  		10159608
 // Class:  		CPSC 331
