@@ -1,4 +1,5 @@
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Scanner;
 
@@ -14,7 +15,6 @@ public class Main {
 		getInput();
 		parse();
 		evaluate();
-		System.out.println("A");
 
 		printVariables();
 		printExpressions();
@@ -52,10 +52,9 @@ public class Main {
 			if (c == '(') {
 				indices.addFirst(index + 1);
 			} else if (c == ')') {
-				String sub = input.substring(indices.peek(), index);
+				String sub = input.substring(indices.pop(), index);
 				if (!inHashMap(expressions, sub)) {
 					expressions.put(IDENTIFIER + index2, sub);
-					indices.pop();
 					index2++;
 				}
 			}
@@ -106,24 +105,18 @@ public class Main {
 
 	private static void printVariables() {
 		System.out.println("Output:\nSet of independent variables:");
-		int index = 0;
-		int size = variables.size();
-		while (index < size) {
-			char next = variables.pop();
-			System.out.println(next);
-			variables.add(next);
-			index++;
+		Iterator<Character> iterator = variables.iterator();
+		while (iterator.hasNext()) {
+			System.out.println(iterator.next());
 		}
 	}
 
 	private static void printExpressions() {
 		System.out.println("Set of logical subexpressions and logical expression:");
-		int index = 0;
-		int size = expressions.size();
-		while (index < size) {
-			String key = "EQ" + index;
+		Iterator<String> iterator = expressions.keySet().iterator();
+		while (iterator.hasNext()) {
+			String key = iterator.next();
 			System.out.printf("%s, %s\n", key, expressions.get(key));
-			index++;
 		}
 	}
 
@@ -141,29 +134,24 @@ public class Main {
 		}
 	}
 
-	private static boolean inList(LinkedList<Character> l, Character o) {
-		int index = 0;
-		int size = l.size();
-		while (index < size) {
-			if (l.get(index) == o) {
+	private static boolean inList(LinkedList<Character> list, Character o) {
+		Iterator<Character> iterator = list.iterator();
+		while (iterator.hasNext()) {
+			if (iterator.next() == o) {
 				return true;
 			}
-			index++;
 		}
 		return false;
 	}
 
-	private static boolean inHashMap(HashMap<String, String> h, String s) {
-		int index = 0;
-		int size = h.size();
-		while (index < size) {
-			String key = IDENTIFIER + index;
-			if (h.get(key).equals(s)) {
+	private static boolean inHashMap(HashMap<String, String> map, String s) {
+		Iterator<String> iterator = map.keySet().iterator();
+		while (iterator.hasNext()) {
+			String key = iterator.next();
+			if (map.get(key).equals(s)) {
 				return true;
 			}
-			index++;
 		}
 		return false;
 	}
-
 }
