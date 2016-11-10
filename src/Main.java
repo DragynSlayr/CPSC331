@@ -1,4 +1,3 @@
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -76,14 +75,13 @@ public class Main {
 				String key = IDENTIFIER + (index - variables.size());
 				truthTable[0][index] = key;
 				if (indexOf(truthValues, key) == -1) {
-					String value = getTruthValues(key);
+					String value = getTruthValues(expressions.get(key));
 					truthValues.put(expressions.get(key), value);
 				}
 			}
 			index++;
 		}
 
-		// Placement loop
 		index = 0;
 		while (index < truthValues.size()) {
 			String key = "";
@@ -95,15 +93,11 @@ public class Main {
 			String value = truthValues.get(key);
 			int index2 = 1;
 			while (index2 < truthTable.length) {
-				// System.out.println("Value: " + value);
 				truthTable[index2][index] = String.valueOf(value.charAt(index2 - 1));
 				index2++;
 			}
 			index++;
 		}
-
-		System.out.println(truthValues.get("A+B"));
-		System.out.println(truthValues.get("-(A+B)"));
 	}
 
 	private static void printVariables() {
@@ -180,15 +174,42 @@ public class Main {
 	}
 
 	private static String getTruthValues(String expression) {
+		if (indexOf(truthValues, expression) > -1) {
+			return truthValues.get(expression);
+		}
 		String values = "";
 		if (expression.length() > 1) {
-			expression = expressions.get(expression);
-			int index = indexOf(expressions, expression);
-			System.out.printf("%s, %d\n", expression, index);
-			if (expression.contains(")")) {
+			if (expression.startsWith("-")
+					&& !truthValues.get(expression.substring(2, expression.length() - 1)).equals(null)) {
+				String key = expression.substring(2, expression.length() - 1);
+				values = negate(truthValues.get(key));
+			} else if (expression.contains(")")) {
 				String[] splitted = expression.split("\\)");
-				System.out.println(Arrays.toString(splitted));
-				values = "FFFFFFFF";
+				int i = 0;
+				while (i < splitted.length) {
+					splitted[i] = splitted[i].replace("(", "");
+					i++;
+				}
+				boolean negated = false;
+				if (splitted[0].length() % 2 == 0) {
+					negated = true;
+				}
+
+				if (splitted[1].startsWith("+")) {
+					if (negated) {
+						values = or(negate(getTruthValues(splitted[0].substring(1))),
+								getTruthValues(splitted[1].substring(1)));
+					} else {
+						values = or(getTruthValues(splitted[0]), getTruthValues(splitted[1].substring(1)));
+					}
+				} else if (splitted[1].startsWith("*")) {
+					if (negated) {
+						values = and(negate(getTruthValues(splitted[0].substring(1))),
+								getTruthValues(splitted[1].substring(1)));
+					} else {
+						values = and(getTruthValues(splitted[0]), getTruthValues(splitted[1].substring(1)));
+					}
+				}
 			} else {
 				int idx = expression.length();
 
