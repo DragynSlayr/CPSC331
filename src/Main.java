@@ -1,3 +1,4 @@
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -8,6 +9,7 @@ public class Main {
 	private static String input;
 	private static LinkedList<Character> variables;
 	private static HashMap<String, String> expressions;
+	private static HashMap<String, String> truthValues;
 	private static String[][] truthTable;
 	private static final String IDENTIFIER = "EX";
 
@@ -32,7 +34,10 @@ public class Main {
 
 	private static void parse() {
 		variables = new LinkedList<Character>();
+		expressions = new HashMap<String, String>();
+		LinkedList<Integer> indices = new LinkedList<Integer>();
 		int index = 0;
+		int index2 = 0;
 
 		while (index < input.length()) {
 			char c = input.charAt(index);
@@ -40,18 +45,7 @@ public class Main {
 				if (indexOf(variables, c) == -1) {
 					variables.add(c);
 				}
-			}
-			index++;
-		}
-
-		index = 0;
-		int index2 = 0;
-		LinkedList<Integer> indices = new LinkedList<Integer>();
-		expressions = new HashMap<String, String>();
-
-		while (index < input.length()) {
-			char c = input.charAt(index);
-			if (c == '(') {
+			} else if (c == '(') {
 				indices.addFirst(index + 1);
 			} else if (c == ')') {
 				String sub = input.substring(indices.pop(), index);
@@ -65,46 +59,51 @@ public class Main {
 	}
 
 	private static void evaluate() {
-		int index = 0;
-		rowHeight = 1;
-
-		while (index < variables.size()) {
-			rowHeight *= 2;
-			index++;
-		}
-
+		rowHeight = power(2, variables.size());
+		truthValues = new HashMap<String, String>();
 		truthTable = new String[1 + rowHeight][variables.size() + expressions.size()];
 
-		index = 0;
-		while (index < variables.size()) {
-			truthTable[0][index] = String.valueOf(variables.get(index));
-			index++;
-		}
-
-		index = 0;
-		while (index < expressions.size()) {
-			String key = IDENTIFIER + index;
-			truthTable[0][index + variables.size()] = expressions.get(key);
-			int index2 = 1;
-			while (index2 < truthTable.length) {
-				String expression = expressions.get(key);
-				truthTable[index2][index + variables.size()] = expression;
-				index2++;
+		int index = 0;
+		while (index < truthTable[0].length) {
+			if (index < variables.size()) {
+				String key = String.valueOf(variables.get(index));
+				truthTable[0][index] = key;
+				if (indexOf(truthValues, key) == -1) {
+					String value = getTruthValues(key);
+					truthValues.put(key, value);
+				}
+			} else {
+				String key = IDENTIFIER + (index - variables.size());
+				truthTable[0][index] = key;
+				if (indexOf(truthValues, key) == -1) {
+					String value = getTruthValues(key);
+					truthValues.put(expressions.get(key), value);
+				}
 			}
 			index++;
 		}
 
+		// Placement loop
 		index = 0;
-		while (index < truthTable[0].length) {
-			String value = getTruthValues(truthTable[0][index]);
+		while (index < truthValues.size()) {
+			String key = "";
+			if (index < variables.size()) {
+				key = truthTable[0][index];
+			} else {
+				key = expressions.get(truthTable[0][index]);
+			}
+			String value = truthValues.get(key);
 			int index2 = 1;
 			while (index2 < truthTable.length) {
-				System.out.println("Value: " + value);
+				// System.out.println("Value: " + value);
 				truthTable[index2][index] = String.valueOf(value.charAt(index2 - 1));
 				index2++;
 			}
 			index++;
 		}
+
+		System.out.println(truthValues.get("A+B"));
+		System.out.println(truthValues.get("-(A+B)"));
 	}
 
 	private static void printVariables() {
@@ -183,17 +182,33 @@ public class Main {
 	private static String getTruthValues(String expression) {
 		String values = "";
 		if (expression.length() > 1) {
+			expression = expressions.get(expression);
 			int index = indexOf(expressions, expression);
 			System.out.printf("%s, %d\n", expression, index);
 			if (expression.contains(")")) {
 				String[] splitted = expression.split("\\)");
-				values = "TTFFTTFFTTFFTTFF";
+				System.out.println(Arrays.toString(splitted));
+				values = "FFFFFFFF";
 			} else {
-				if (expression.indexOf('+') > -1) {
-					int idx = expression.indexOf('+');
-					String a = expression.substring(0, idx);
-					String b = expression.substring(idx + 1);
+				int idx = expression.length();
+
+				if (expression.indexOf('+') > -1 && expression.indexOf('+') < idx) {
+					idx = expression.indexOf('+');
+				} else if (expression.indexOf('*') > -1 && expression.indexOf('*') < idx) {
+					idx = expression.indexOf('*');
+				} else if (expression.indexOf('-') > -1 && expression.indexOf('-') < idx) {
+					idx = expression.indexOf('-');
+				}
+
+				String a = expression.substring(0, idx);
+				String b = expression.substring(idx + 1);
+
+				if (expression.charAt(idx) == '+') {
 					values = or(getTruthValues(a), getTruthValues(b));
+				} else if (expression.charAt(idx) == '*') {
+					values = and(getTruthValues(a), getTruthValues(b));
+				} else {
+					values = negate(getTruthValues(b));
 				}
 			}
 		} else {
