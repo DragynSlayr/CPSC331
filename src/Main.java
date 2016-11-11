@@ -90,6 +90,7 @@ public class Main {
 			} else {
 				key = expressions.get(truthTable[0][index]);
 			}
+			System.out.println(key);
 			String value = truthValues.get(key);
 			int index2 = 1;
 			while (index2 < truthTable.length) {
@@ -97,6 +98,12 @@ public class Main {
 				index2++;
 			}
 			index++;
+		}
+
+		Iterator<String> s = truthValues.keySet().iterator();
+		while (s.hasNext()) {
+			String key = s.next();
+			System.out.println(key + " = " + truthValues.get(key));
 		}
 	}
 
@@ -190,25 +197,10 @@ public class Main {
 					splitted[i] = splitted[i].replace("(", "");
 					i++;
 				}
-				boolean negated = false;
-				if (splitted[0].length() % 2 == 0) {
-					negated = true;
-				}
-
 				if (splitted[1].startsWith("+")) {
-					if (negated) {
-						values = or(negate(getTruthValues(splitted[0].substring(1))),
-								getTruthValues(splitted[1].substring(1)));
-					} else {
-						values = or(getTruthValues(splitted[0]), getTruthValues(splitted[1].substring(1)));
-					}
+					values = or(getTruthValues(splitted[0]), getTruthValues(splitted[1].substring(1)));
 				} else if (splitted[1].startsWith("*")) {
-					if (negated) {
-						values = and(negate(getTruthValues(splitted[0].substring(1))),
-								getTruthValues(splitted[1].substring(1)));
-					} else {
-						values = and(getTruthValues(splitted[0]), getTruthValues(splitted[1].substring(1)));
-					}
+					values = and(getTruthValues(splitted[0]), getTruthValues(splitted[1].substring(1)));
 				}
 			} else {
 				int idx = expression.length();
@@ -246,6 +238,7 @@ public class Main {
 				index++;
 			}
 		}
+		System.out.printf("%s\t%s\n", expression, values);
 		return values;
 	}
 
