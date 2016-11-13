@@ -90,7 +90,7 @@ public class Main {
 			} else {
 				key = expressions.get(truthTable[0][index]);
 			}
-			System.out.println(key);
+			// System.out.println(key);
 			String value = truthValues.get(key);
 			int index2 = 1;
 			while (index2 < truthTable.length) {
@@ -100,11 +100,11 @@ public class Main {
 			index++;
 		}
 
-		Iterator<String> s = truthValues.keySet().iterator();
-		while (s.hasNext()) {
-			String key = s.next();
-			System.out.println(key + " = " + truthValues.get(key));
-		}
+		/*
+		 * Iterator<String> s = truthValues.keySet().iterator(); while
+		 * (s.hasNext()) { String key = s.next(); System.out.println(key + " = "
+		 * + truthValues.get(key)); }
+		 */
 	}
 
 	private static void printVariables() {
@@ -238,7 +238,7 @@ public class Main {
 				index++;
 			}
 		}
-		System.out.printf("%s\t%s\n", expression, values);
+		// System.out.printf("%s\t%s\n", expression, values);
 		return values;
 	}
 
