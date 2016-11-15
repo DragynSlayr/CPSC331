@@ -34,7 +34,7 @@ public class Main {
 	private static void parse() {
 		variables = new LinkedList<Character>();
 		expressions = new HashMap<String, String>();
-		LinkedList<Integer> indices = new LinkedList<Integer>();
+		Stack<Integer> indices = new Stack<Integer>();
 		int index = 0;
 		int index2 = 0;
 
@@ -45,7 +45,7 @@ public class Main {
 					variables.add(c);
 				}
 			} else if (c == '(') {
-				indices.addFirst(index + 1);
+				indices.push(index + 1);
 			} else if (c == ')') {
 				String sub = input.substring(indices.pop(), index);
 				if (indexOf(expressions, sub) == -1) {
@@ -207,7 +207,7 @@ public class Main {
 		}
 		return values;
 	}
-	
+
 	private static String toPrefix(String in) {
 		String out = "";
 		Stack<Character> stack = new Stack<Character>();
@@ -223,7 +223,7 @@ public class Main {
 			}
 			index--;
 		}
-		while(!stack.isEmpty()) {
+		while (!stack.isEmpty()) {
 			out = stack.pop() + out;
 		}
 		return out;
