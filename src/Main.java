@@ -35,6 +35,7 @@ public class Main {
 		variables = new LinkedList<Character>();
 		expressions = new HashMap<String, String>();
 		Stack<Integer> indices = new Stack<Integer>();
+
 		int index = 0;
 		int index2 = 0;
 
@@ -64,25 +65,16 @@ public class Main {
 
 		int index = 0;
 		while (index < truthTable[0].length) {
-			if (index < variables.size()) {
-				String key = String.valueOf(variables.get(index));
-				truthTable[0][index] = key;
-			} else {
-				String key = IDENTIFIER + (index - variables.size());
-				truthTable[0][index] = key;
-			}
-			index++;
-		}
-
-		index = 0;
-		int length = variables.size() + expressions.size();
-		while (index < length) {
+			String key = "";
 			String expression = "";
 			if (index < variables.size()) {
-				expression = truthTable[0][index];
+				key = String.valueOf(variables.get(index));
+				expression = key;
 			} else {
-				expression = expressions.get(truthTable[0][index]);
+				key = IDENTIFIER + (index - variables.size());
+				expression = expressions.get(key);
 			}
+			truthTable[0][index] = key;
 			String value = getTruthValues(expression);
 			int index2 = 1;
 			while (index2 < truthTable.length) {
@@ -122,7 +114,8 @@ public class Main {
 					System.out.print(truthTable[index][index2] + "\t");
 				} else {
 					char[] pad = new char[truthTable[0][index2].length() / 2];
-					System.out.print(new String(pad).replace('\0', ' ') + truthTable[index][index2] + "\t");
+					String padding = new String(pad).replace('\0', ' ');
+					System.out.print(padding + truthTable[index][index2] + "\t");
 				}
 				index2++;
 			}
@@ -153,8 +146,7 @@ public class Main {
 		boolean found = false;
 		Iterator<String> iterator = map.keySet().iterator();
 		while (iterator.hasNext() && !found) {
-			String key = iterator.next();
-			if (map.get(key).equals(s)) {
+			if (map.get(iterator.next()).equals(s)) {
 				found = true;
 			}
 			index++;
@@ -193,16 +185,21 @@ public class Main {
 
 	private static String getTruthColumn(char c) {
 		String values = "";
-		int split = power(2, indexOf(variables, c) + 1);
+		int split = rowHeight / power(2, indexOf(variables, c) + 1);
 		int index = 0;
+		int counter = 0;
+		boolean isTrue = true;
 		while (index < rowHeight) {
-			int a = index % ((2 * rowHeight) / split);
-			int b = rowHeight / split;
-			if (a < b) {
+			if (counter == split) {
+				counter = 0;
+				isTrue = !isTrue;
+			}
+			if (isTrue) {
 				values += "T";
 			} else {
 				values += "F";
 			}
+			counter++;
 			index++;
 		}
 		return values;
