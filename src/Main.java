@@ -2,13 +2,13 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Scanner;
+import java.util.Stack;
 
 public class Main {
 
 	private static String input;
 	private static LinkedList<Character> variables;
 	private static HashMap<String, String> expressions;
-	private static HashMap<String, String> truthValues;
 	private static String[][] truthTable;
 	private static final String IDENTIFIER = "EX";
 
@@ -55,11 +55,11 @@ public class Main {
 			}
 			index++;
 		}
+
+		rowHeight = power(2, variables.size());
 	}
 
 	private static void evaluate() {
-		rowHeight = power(2, variables.size());
-		truthValues = new HashMap<String, String>();
 		truthTable = new String[1 + rowHeight][variables.size() + expressions.size()];
 
 		int index = 0;
@@ -67,31 +67,23 @@ public class Main {
 			if (index < variables.size()) {
 				String key = String.valueOf(variables.get(index));
 				truthTable[0][index] = key;
-				if (indexOf(truthValues, key) == -1) {
-					String value = getTruthValues(key);
-					truthValues.put(key, value);
-				}
 			} else {
 				String key = IDENTIFIER + (index - variables.size());
 				truthTable[0][index] = key;
-				if (indexOf(truthValues, key) == -1) {
-					String value = getTruthValues(expressions.get(key));
-					truthValues.put(expressions.get(key), value);
-				}
 			}
 			index++;
 		}
 
 		index = 0;
-		while (index < truthValues.size()) {
-			String key = "";
+		int length = variables.size() + expressions.size();
+		while (index < length) {
+			String expression = "";
 			if (index < variables.size()) {
-				key = truthTable[0][index];
+				expression = truthTable[0][index];
 			} else {
-				key = expressions.get(truthTable[0][index]);
+				expression = expressions.get(truthTable[0][index]);
 			}
-			// System.out.println(key);
-			String value = truthValues.get(key);
+			String value = getTruthValues(expression);
 			int index2 = 1;
 			while (index2 < truthTable.length) {
 				truthTable[index2][index] = String.valueOf(value.charAt(index2 - 1));
@@ -99,12 +91,6 @@ public class Main {
 			}
 			index++;
 		}
-
-		/*
-		 * Iterator<String> s = truthValues.keySet().iterator(); while
-		 * (s.hasNext()) { String key = s.next(); System.out.println(key + " = "
-		 * + truthValues.get(key)); }
-		 */
 	}
 
 	private static void printVariables() {
@@ -181,65 +167,66 @@ public class Main {
 	}
 
 	private static String getTruthValues(String expression) {
-		if (indexOf(truthValues, expression) > -1) {
-			return truthValues.get(expression);
+		if (expression.length() == 1) {
+			return getTruthColumn(expression.charAt(0));
 		}
-		String values = "";
-		if (expression.length() > 1) {
-			if (expression.startsWith("-")
-					&& !truthValues.get(expression.substring(2, expression.length() - 1)).equals(null)) {
-				String key = expression.substring(2, expression.length() - 1);
-				values = negate(truthValues.get(key));
-			} else if (expression.contains(")")) {
-				String[] splitted = expression.split("\\)");
-				int i = 0;
-				while (i < splitted.length) {
-					splitted[i] = splitted[i].replace("(", "");
-					i++;
-				}
-				if (splitted[1].startsWith("+")) {
-					values = or(getTruthValues(splitted[0]), getTruthValues(splitted[1].substring(1)));
-				} else if (splitted[1].startsWith("*")) {
-					values = and(getTruthValues(splitted[0]), getTruthValues(splitted[1].substring(1)));
-				}
+		Stack<String> stack = new Stack<String>();
+		String prefix = toPrefix(expression);
+		int index = prefix.length() - 1;
+		while (index > -1) {
+			char c = prefix.charAt(index);
+			if (Character.isLetter(c)) {
+				stack.push(getTruthColumn(c));
 			} else {
-				int idx = expression.length();
-
-				if (expression.indexOf('+') > -1 && expression.indexOf('+') < idx) {
-					idx = expression.indexOf('+');
-				} else if (expression.indexOf('*') > -1 && expression.indexOf('*') < idx) {
-					idx = expression.indexOf('*');
-				} else if (expression.indexOf('-') > -1 && expression.indexOf('-') < idx) {
-					idx = expression.indexOf('-');
-				}
-
-				String a = expression.substring(0, idx);
-				String b = expression.substring(idx + 1);
-
-				if (expression.charAt(idx) == '+') {
-					values = or(getTruthValues(a), getTruthValues(b));
-				} else if (expression.charAt(idx) == '*') {
-					values = and(getTruthValues(a), getTruthValues(b));
-				} else {
-					values = negate(getTruthValues(b));
+				if (c == '-') {
+					stack.push(negate(stack.pop()));
+				} else if (c == '+') {
+					stack.push(or(stack.pop(), stack.pop()));
+				} else if (c == '*') {
+					stack.push(and(stack.pop(), stack.pop()));
 				}
 			}
-		} else {
-			int split = power(2, indexOf(variables, expression.charAt(0)) + 1);
-			int index = 0;
-			while (index < rowHeight) {
-				int a = index % ((2 * rowHeight) / split);
-				int b = rowHeight / split;
-				if (a < b) {
-					values += "T";
-				} else {
-					values += "F";
-				}
-				index++;
-			}
+			index--;
 		}
-		// System.out.printf("%s\t%s\n", expression, values);
+		return stack.pop();
+	}
+
+	private static String getTruthColumn(char c) {
+		String values = "";
+		int split = power(2, indexOf(variables, c) + 1);
+		int index = 0;
+		while (index < rowHeight) {
+			int a = index % ((2 * rowHeight) / split);
+			int b = rowHeight / split;
+			if (a < b) {
+				values += "T";
+			} else {
+				values += "F";
+			}
+			index++;
+		}
 		return values;
+	}
+	
+	private static String toPrefix(String in) {
+		String out = "";
+		Stack<Character> stack = new Stack<Character>();
+		int index = in.length() - 1;
+		while (index > -1) {
+			char c = in.charAt(index);
+			if (Character.isLetter(c)) {
+				out = c + out;
+			} else if (c == '(') {
+				out = stack.pop() + out;
+			} else if (c != ')') {
+				stack.push(c);
+			}
+			index--;
+		}
+		while(!stack.isEmpty()) {
+			out = stack.pop() + out;
+		}
+		return out;
 	}
 
 	private static String negate(String in) {
