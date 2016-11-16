@@ -4,23 +4,45 @@ import java.util.LinkedList;
 import java.util.Scanner;
 import java.util.Stack;
 
+// Name: 		Inderpreet Dhillon
+// UCID:  		10159608
+// Class:  		CPSC 331
+// Purpose:		This program is capable of solving logical expressions given that they are formatted correctly
+// Usage: 		Enter an expression consisting of letters (A-z) and symbols (+, *, -, "(, ')') and the truth table will be printed
+// 					Valid expression: 		((A+B)+(-C))
+//					Invalid expression:	(A+B)+-C, this expression is missing outer parentheses and brackets around -C
+
 public class Main {
 
+	// Declare global variables for storing input, independent variables and sub-expressions
 	private static String input;
 	private static LinkedList<Character> variables;
 	private static HashMap<String, String> expressions;
+	
+	// Final truth table and height of the table
 	private static String[][] truthTable;
+	private static int rowHeight;
+	
+	// A unique identifier key for the sub-expressions in the HashMap
 	private static final String IDENTIFIER = "LE";
 
-	private static int rowHeight;
-
 	public static void main(String[] args) {
+		// Get input string from the user
 		getInput();
+		
+		// Find independent variables and sub-expressions
 		parse();
+		
+		// Evaluate the sup-expressions and store the results in the truth table
 		evaluate();
 
+		// Print the independent variables
 		printVariables();
+		
+		// Print the sub-expressions
 		printExpressions();
+		
+		// Print the final truth table
 		printTruthTable();
 	}
 
