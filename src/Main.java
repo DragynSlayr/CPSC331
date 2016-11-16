@@ -14,89 +14,136 @@ import java.util.Stack;
 
 public class Main {
 
-	// Declare global variables for storing input, independent variables and sub-expressions
+	// Declare global variables for storing input, independent variables and
+	// sub-expressions
 	private static String input;
 	private static LinkedList<Character> variables;
 	private static HashMap<String, String> expressions;
-	
-	// Final truth table and height of the table
+
+	// Declare final truth table and number of truth values per variable
 	private static String[][] truthTable;
-	private static int rowHeight;
-	
+	private static int numTruthValues;
+
 	// A unique identifier key for the sub-expressions in the HashMap
 	private static final String IDENTIFIER = "LE";
 
 	public static void main(String[] args) {
 		// Get input string from the user
 		getInput();
-		
+
 		// Find independent variables and sub-expressions
 		parse();
-		
+
 		// Evaluate the sup-expressions and store the results in the truth table
 		evaluate();
 
 		// Print the independent variables
 		printVariables();
-		
+
 		// Print the sub-expressions
 		printExpressions();
-		
+
 		// Print the final truth table
 		printTruthTable();
 	}
 
 	private static void getInput() {
+		// Declare Scanner object for taking input
 		Scanner keyb = new Scanner(System.in);
+
+		// Prompt user for input and store upper-cased string
 		System.out.print("Input string: ");
 		input = keyb.nextLine().toUpperCase();
+
+		// Close Scanner object
 		keyb.close();
 	}
 
 	private static void parse() {
+		// Initialize independent variables list
 		variables = new LinkedList<Character>();
+
+		// Initialize sub-expressions map
 		expressions = new HashMap<String, String>();
+
+		// Create stack to hold indices of all '(' in the expression
 		Stack<Integer> indices = new Stack<Integer>();
 
-		int index2 = 0;
+		// Initialize counter for the number of sub-expressions
+		int expressionCount = 0;
 
+		// Traverse the input string
 		for (int i = 0; i < input.length(); i++) {
+
+			// Get the current character
 			char c = input.charAt(i);
+
+			// Handle the current character
 			if (Character.isLetter(c)) {
+
+				// Check if the list has the variable
 				if (indexOf(variables, c) == -1) {
+					// Add the character to the variables list
 					variables.add(c);
 				}
 			} else if (c == '(') {
-				indices.push(i + 1);
+				// When the character is a '(', add the index to the stack
+				indices.push(i);
 			} else if (c == ')') {
-				String sub = input.substring(indices.pop(), i);
+				// Get the sub-expression from the last '(' to the current index
+				String sub = input.substring(indices.pop() + 1, i);
+
+				// Check if the map has the sub-expression
 				if (indexOf(expressions, sub) == -1) {
-					expressions.put(IDENTIFIER + index2, sub);
-					index2++;
+					// Put the sub-expression in the map
+					expressions.put(IDENTIFIER + expressionCount, sub);
+
+					// Increment expression counter
+					expressionCount++;
 				}
 			}
 		}
 
-		rowHeight = power(2, variables.size());
+		// Calculate the number of truth values based on the number of variables
+		numTruthValues = power(2, variables.size());
 	}
 
 	private static void evaluate() {
-		truthTable = new String[1 + rowHeight][variables.size() + expressions.size()];
+		// Initialize the truth table with the correct dimensions
+		truthTable = new String[1 + numTruthValues][variables.size() + expressions.size()];
 
+		// Traverse each column of the truth table
 		for (int i = 0; i < truthTable[0].length; i++) {
-			String key = "";
-			String expression = "";
+
+			// Declare empty truth values string
+			String values = "";
+
+			// Determine if the current column holds a variable or expression
 			if (i < variables.size()) {
-				key = String.valueOf(variables.get(i));
-				expression = key;
+				// Get the current variable
+				char variable = variables.get(i);
+
+				// Set the current column header to variable at the index
+				truthTable[0][i] = String.valueOf(variable);
+
+				// Set the values to be those for the variable
+				values = getTruthColumn(variable);
 			} else {
-				key = IDENTIFIER + (i - variables.size());
-				expression = expressions.get(key);
+				// Get the key for the expression
+				String key = IDENTIFIER + (i - variables.size());
+
+				// Set values to be the evaluated truth values of the expression
+				values = getTruthValues(expressions.get(key));
 			}
-			truthTable[0][i] = key;
-			String value = getTruthValues(expression);
+
+			// Traverse each row of the truth table
 			for (int j = 1; j < truthTable.length; j++) {
-				truthTable[j][i] = String.valueOf(value.charAt(j - 1));
+
+				// Get the current truth value
+				char value = values.charAt(j - 1);
+
+				// Store the value in the array
+				truthTable[j][i] = String.valueOf(value);
 			}
 		}
 	}
@@ -168,9 +215,6 @@ public class Main {
 	}
 
 	private static String getTruthValues(String expression) {
-		if (expression.length() == 1) {
-			return getTruthColumn(expression.charAt(0));
-		}
 		Stack<String> stack = new Stack<String>();
 		String prefix = toPrefix(expression);
 		for (int i = prefix.length() - 1; i > -1; i--) {
@@ -192,10 +236,10 @@ public class Main {
 
 	private static String getTruthColumn(char c) {
 		String values = "";
-		int split = rowHeight / power(2, indexOf(variables, c) + 1);
+		int split = numTruthValues / power(2, indexOf(variables, c) + 1);
 		int counter = 0;
 		boolean isTrue = true;
-		for (int i = 0; i < rowHeight; i++) {
+		for (int i = 0; i < numTruthValues; i++) {
 			if (counter == split) {
 				counter = 0;
 				isTrue = !isTrue;
