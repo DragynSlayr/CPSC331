@@ -10,7 +10,7 @@ public class Main {
 	private static LinkedList<Character> variables;
 	private static HashMap<String, String> expressions;
 	private static String[][] truthTable;
-	private static final String IDENTIFIER = "EX";
+	private static final String IDENTIFIER = "LE";
 
 	private static int rowHeight;
 
@@ -195,9 +195,9 @@ public class Main {
 				isTrue = !isTrue;
 			}
 			if (isTrue) {
-				values += "T";
+				values += 'T';
 			} else {
-				values += "F";
+				values += 'F';
 			}
 			counter++;
 			index++;
@@ -208,9 +208,8 @@ public class Main {
 	private static String toPrefix(String in) {
 		String out = "";
 		Stack<Character> stack = new Stack<Character>();
-		int index = in.length() - 1;
-		while (index > -1) {
-			char c = in.charAt(index);
+		for (int i = in.length() - 1; i > -1; i--) {
+			char c = in.charAt(i);
 			if (Character.isLetter(c)) {
 				out = c + out;
 			} else if (c == '(') {
@@ -218,7 +217,6 @@ public class Main {
 			} else if (c != ')') {
 				stack.push(c);
 			}
-			index--;
 		}
 		while (!stack.isEmpty()) {
 			out = stack.pop() + out;
@@ -228,63 +226,55 @@ public class Main {
 
 	private static String negate(String in) {
 		String result = "";
-		int index = 0;
-		while (index < in.length()) {
-			char c = in.charAt(index);
+		for (int i = 0; i < in.length(); i++) {
+			char c = in.charAt(i);
 			if (c == 'T') {
-				result += "F";
+				result += 'F';
 			} else {
-				result += "T";
+				result += 'T';
 			}
-			index++;
 		}
 		return result;
 	}
 
 	private static String or(String s1, String s2) {
 		String result = "";
-		int index = 0;
-		while (index < s1.length()) {
-			char a = s1.charAt(index);
-			char b = s2.charAt(index);
+		for (int i = 0; i < s1.length(); i++) {
+			char a = s1.charAt(i);
+			char b = s2.charAt(i);
 			if (a == 'T' || b == 'T') {
-				result += "T";
+				result += 'T';
 			} else {
-				result += "F";
+				result += 'F';
 			}
-			index++;
 		}
 		return result;
 	}
 
 	private static String and(String s1, String s2) {
 		String result = "";
-		int index = 0;
-		while (index < s1.length()) {
-			char a = s1.charAt(index);
-			char b = s2.charAt(index);
-			if (a == b && a == 'T') {
-				result += "T";
+		for (int i = 0; i < s1.length(); i++) {
+			char a = s1.charAt(i);
+			char b = s2.charAt(i);
+			if (a == 'T' && b == 'T') {
+				result += 'T';
 			} else {
-				result += "F";
+				result += 'F';
 			}
-			index++;
 		}
 		return result;
 	}
 
-	private static int power(int a, int b) {
-		if (a == 0) {
+	private static int power(int base, int power) {
+		if (base == 0) {
 			return 0;
 		}
-		if (b == 0) {
+		if (power == 0) {
 			return 1;
 		}
-		int result = a;
-		int index = 1;
-		while (index < b) {
-			result *= a;
-			index++;
+		int result = base;
+		for (int i = 1; i < power; i++) {
+			result *= base;
 		}
 		return result;
 	}
