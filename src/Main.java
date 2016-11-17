@@ -268,67 +268,139 @@ public class Main {
 		return found;
 	}
 
-	private static String toPrefix(String input) {
+	private static String toPostfix(String input) {
 		// Initialize output string
 		String output = "";
-		Stack<Character> stack = new Stack<Character>();
-		for (int i = input.length() - 1; i > -1; i--) {
+
+		// Initialize stack for operators
+		Stack<Character> operators = new Stack<Character>();
+
+		// Iterate through input string
+		for (int i = 0; i < input.length(); i++) {
+
+			// Get character at current position
 			char c = input.charAt(i);
+
+			// Determine what to do with the character
 			if (Character.isLetter(c)) {
-				output = c + output;
-			} else if (c == '(') {
-				output = stack.pop() + output;
-			} else if (c != ')') {
-				stack.push(c);
+				// Append character to output when it is a letter
+				output += c;
+			} else if (c == ')') {
+				// Append the operand from the stack if a ')' is found
+				output += operators.pop();
+			} else if (c != '(') {
+				// Push the character to the top of the stack
+				operators.push(c);
 			}
 		}
-		while (!stack.isEmpty()) {
-			output = stack.pop() + output;
+
+		// Loop until the stack is empty
+		while (!operators.isEmpty()) {
+
+			// Append the top element of the stack to output
+			output += operators.pop();
 		}
+
+		// Return the output
 		return output;
 	}
 
 	private static String getTruthValues(String expression) {
-		Stack<String> stack = new Stack<String>();
-		String prefix = toPrefix(expression);
-		for (int i = prefix.length() - 1; i > -1; i--) {
-			char c = prefix.charAt(i);
+		// Initialize stack for truth values
+		Stack<String> truthValues = new Stack<String>();
+
+		// Convert the expression to post fix notation
+		String postfix = toPostfix(expression);
+
+		// Iterate through post-fix string
+		for (int i = 0; i < postfix.length(); i++) {
+
+			// Get the current character
+			char c = postfix.charAt(i);
+
+			// Determine what to do with the character
 			if (Character.isLetter(c)) {
-				stack.push(getTruthColumn(c));
+				// Get the truth values for the character
+				String values = getTruthColumn(c);
+
+				// Put the truth values on the stack
+				truthValues.push(values);
 			} else {
+				// Initialize string for truth values
+				String values = "";
+
+				// Deal with the operator
 				if (c == '-') {
-					stack.push(negate(stack.pop()));
+					// Get a single truth value string from the stack
+					String operand = truthValues.pop();
+
+					// Negate the operand
+					values = negate(operand);
 				} else if (c == '+') {
-					stack.push(or(stack.pop(), stack.pop()));
+					// Get two operands from the stack
+					String operandA = truthValues.pop();
+					String operandB = truthValues.pop();
+
+					// OR the operands
+					values = or(operandA, operandB);
 				} else if (c == '*') {
-					stack.push(and(stack.pop(), stack.pop()));
+					// Get two operands from the stack
+					String operandA = truthValues.pop();
+					String operandB = truthValues.pop();
+
+					// AND the operands
+					values = and(operandA, operandB);
 				}
+
+				// Place the values back on the stack
+				truthValues.push(values);
 			}
 		}
-		return stack.pop();
+
+		// Take the top value and return it
+		return truthValues.pop();
 	}
 
 	private static String getTruthColumn(char c) {
+		// Initialize string for truth values
 		String values = "";
-		int split = (int) (numTruthValues / Math.pow(2, indexOf(variables, c) + 1));
+
+		// Calculate the number of trues before switching to falses, based on
+		// the variable number and the total truth values
+		int numTrues = (int) (numTruthValues / Math.pow(2, indexOf(variables, c) + 1));
+
+		// Initialize counter for each value
 		int counter = 0;
+
+		// Initialize boolean for whether the value is true or not
 		boolean isTrue = true;
+
+		// Loop for the number of truth values
 		for (int i = 0; i < numTruthValues; i++) {
-			if (counter == split) {
+
+			// Check if enough trues have been put in
+			if (counter == numTrues) {
+				// Reset counter
 				counter = 0;
+
+				// Toggle boolean
 				isTrue = !isTrue;
 			}
-			if (isTrue) {
-				values += 'T';
-			} else {
-				values += 'F';
-			}
+
+			// Add the first character of the string representation of the
+			// boolean to the values
+			values += String.valueOf(isTrue).charAt(0);
+
+			// Increment counter
 			counter++;
 		}
-		return values;
+
+		// Return the truth values
+		return values.toUpperCase();
 	}
 
 	private static String negate(String input) {
+		// Initialize string for result
 		String result = "";
 		for (int i = 0; i < input.length(); i++) {
 			char c = input.charAt(i);
