@@ -276,10 +276,7 @@ public class Main {
 		Stack<Character> operators = new Stack<Character>();
 
 		// Iterate through input string
-		for (int i = 0; i < input.length(); i++) {
-
-			// Get character at current position
-			char c = input.charAt(i);
+		for (char c : input.toCharArray()) {
 
 			// Determine what to do with the character
 			if (Character.isLetter(c)) {
@@ -313,10 +310,7 @@ public class Main {
 		String postfix = toPostfix(expression);
 
 		// Iterate through post-fix string
-		for (int i = 0; i < postfix.length(); i++) {
-
-			// Get the current character
-			char c = postfix.charAt(i);
+		for (char c : postfix.toCharArray()) {
 
 			// Determine what to do with the character
 			if (Character.isLetter(c)) {
@@ -402,42 +396,53 @@ public class Main {
 	private static String negate(String input) {
 		// Initialize string for result
 		String result = "";
-		for (int i = 0; i < input.length(); i++) {
-			char c = input.charAt(i);
-			if (c == 'T') {
-				result += 'F';
-			} else {
-				result += 'T';
-			}
+
+		// Iterate through input string
+		for (char c : input.toCharArray()) {
+
+			// Add the negation of the character to the result
+			result += (c == 'T') ? 'F' : 'T';
 		}
+
+		// Return the negated input
 		return result;
 	}
 
 	private static String or(String input1, String input2) {
+		// Initialize string for result
 		String result = "";
+
+		// Iterate through both strings
 		for (int i = 0; i < input1.length(); i++) {
+
+			// Get the current character from both strings
 			char a = input1.charAt(i);
 			char b = input2.charAt(i);
-			if (a == 'T' || b == 'T') {
-				result += 'T';
-			} else {
-				result += 'F';
-			}
+
+			// Add the OR of the character to the result
+			result += (a == 'T' || b == 'T') ? 'T' : 'F';
 		}
+
+		// Return the OR of the inputs
 		return result;
 	}
 
 	private static String and(String input1, String input2) {
+		// Initialize string for result
 		String result = "";
+
+		// Iterate through both strings
 		for (int i = 0; i < input1.length(); i++) {
+
+			// Get the current character from both strings
 			char a = input1.charAt(i);
 			char b = input2.charAt(i);
-			if (a == 'T' && b == 'T') {
-				result += 'T';
-			} else {
-				result += 'F';
-			}
+
+			// Add the AND of the character to the result
+			result += (a == 'T' && b == 'T') ? 'T' : 'F';
 		}
+
+		// Return the AND of the inputs
 		return result;
 	}
 }
