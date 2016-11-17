@@ -126,7 +126,7 @@ public class Main {
 				// Set the current column header to variable at the index
 				truthTable[0][i] = String.valueOf(variable);
 
-				// Set the values to be those for the variable
+				// Set the values to be those of the variable
 				values = getTruthColumn(variable);
 			} else {
 				// Get the key for the expression
@@ -149,33 +149,62 @@ public class Main {
 	}
 
 	private static void printVariables() {
+		// Print the independent variables
 		System.out.println("Output:\nSet of independent variables:");
+
+		// Get the variables list's iterator
 		Iterator<Character> iterator = variables.iterator();
+
+		// Loop until the iterator runs out of items
 		while (iterator.hasNext()) {
+
+			// Print the next variable
 			System.out.println(iterator.next());
 		}
 	}
 
 	private static void printExpressions() {
+		// Print the sub-expressions
 		System.out.println("Set of logical subexpressions and logical expression:");
+
+		// Loop through the expressions
 		for (int i = 0; i < expressions.size(); i++) {
+
+			// Get the key from the current index
 			String key = IDENTIFIER + i;
+
+			// Print the key and sub-expression
 			System.out.printf("%s, %s\n", key, expressions.get(key));
 		}
 	}
 
 	private static void printTruthTable() {
+		// Print the truth table
 		System.out.println("Truth Table:");
+
+		// Iterate through the rows
 		for (int i = 0; i < truthTable.length; i++) {
+
+			// Iterate through the columns
 			for (int j = 0; j < truthTable[i].length; j++) {
+
+				// Check which row we are on
 				if (i == 0) {
+					// Print the current element
 					System.out.print(truthTable[i][j] + "\t");
 				} else {
+					// Create a char array of half the size of the column header
 					char[] pad = new char[truthTable[0][j].length() / 2];
+
+					// Create a string from the array and replace null
+					// terminator character with spaces
 					String padding = new String(pad).replace('\0', ' ');
+
+					// Print the padding and current element
 					System.out.print(padding + truthTable[i][j] + "\t");
 				}
 			}
+			// Go to the next line
 			System.out.println();
 		}
 	}
@@ -212,6 +241,25 @@ public class Main {
 		} else {
 			return -1;
 		}
+	}
+
+	private static String toPrefix(String in) {
+		String out = "";
+		Stack<Character> stack = new Stack<Character>();
+		for (int i = in.length() - 1; i > -1; i--) {
+			char c = in.charAt(i);
+			if (Character.isLetter(c)) {
+				out = c + out;
+			} else if (c == '(') {
+				out = stack.pop() + out;
+			} else if (c != ')') {
+				stack.push(c);
+			}
+		}
+		while (!stack.isEmpty()) {
+			out = stack.pop() + out;
+		}
+		return out;
 	}
 
 	private static String getTruthValues(String expression) {
@@ -252,25 +300,6 @@ public class Main {
 			counter++;
 		}
 		return values;
-	}
-
-	private static String toPrefix(String in) {
-		String out = "";
-		Stack<Character> stack = new Stack<Character>();
-		for (int i = in.length() - 1; i > -1; i--) {
-			char c = in.charAt(i);
-			if (Character.isLetter(c)) {
-				out = c + out;
-			} else if (c == '(') {
-				out = stack.pop() + out;
-			} else if (c != ')') {
-				stack.push(c);
-			}
-		}
-		while (!stack.isEmpty()) {
-			out = stack.pop() + out;
-		}
-		return out;
 	}
 
 	private static String negate(String in) {
