@@ -1,6 +1,8 @@
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 import java.util.Stack;
 
@@ -94,7 +96,7 @@ public class Main {
 				String sub = input.substring(indices.pop() + 1, i);
 
 				// Check if the map has the sub-expression
-				if (indexOf(expressions, sub) == -1) {
+				if (!contains(expressions, sub)) {
 					// Put the sub-expression in the map
 					expressions.put(IDENTIFIER + expressionCount, sub);
 
@@ -212,57 +214,78 @@ public class Main {
 		}
 	}
 
-	private static int indexOf(LinkedList<Character> list, Character o) {
+	private static <E> int indexOf(List<E> list, E object) {
+		// Initialize index
 		int index = -1;
+
+		// Initialize found boolean
 		boolean found = false;
-		Iterator<Character> iterator = list.iterator();
+
+		// Get iterator from list
+		Iterator<E> iterator = list.iterator();
+
+		// Traverse list until the object is found or all elements are used
 		while (iterator.hasNext() && !found) {
-			if (iterator.next() == o) {
+
+			// Compare next element to the object
+			if (iterator.next().equals(object)) {
+				// Set found when the object has been located
 				found = true;
 			}
+
+			// Increment index
 			index++;
 		}
+
+		// Determine if the object has been found
 		if (found) {
+			// Return the index when the object is found
 			return index;
 		} else {
+			// Return -1 when the object is not found
 			return -1;
 		}
 	}
 
-	private static int indexOf(HashMap<String, String> map, String s) {
-		int index = -1;
+	private static <K, V> boolean contains(Map<K, V> map, V object) {
+		// Initialize found boolean
 		boolean found = false;
-		Iterator<String> iterator = map.keySet().iterator();
+
+		// Get iterator from map's keys
+		Iterator<K> iterator = map.keySet().iterator();
+
+		// Traverse map until the object is found or all elements are used
 		while (iterator.hasNext() && !found) {
-			if (map.get(iterator.next()).equals(s)) {
+
+			// Compare value of next key to the object
+			if (map.get(iterator.next()).equals(object)) {
+				// Set found when the object is in the map
 				found = true;
 			}
-			index++;
 		}
-		if (found) {
-			return index;
-		} else {
-			return -1;
-		}
+
+		// True if the object is in the map, false other wise
+		return found;
 	}
 
-	private static String toPrefix(String in) {
-		String out = "";
+	private static String toPrefix(String input) {
+		// Initialize output string
+		String output = "";
 		Stack<Character> stack = new Stack<Character>();
-		for (int i = in.length() - 1; i > -1; i--) {
-			char c = in.charAt(i);
+		for (int i = input.length() - 1; i > -1; i--) {
+			char c = input.charAt(i);
 			if (Character.isLetter(c)) {
-				out = c + out;
+				output = c + output;
 			} else if (c == '(') {
-				out = stack.pop() + out;
+				output = stack.pop() + output;
 			} else if (c != ')') {
 				stack.push(c);
 			}
 		}
 		while (!stack.isEmpty()) {
-			out = stack.pop() + out;
+			output = stack.pop() + output;
 		}
-		return out;
+		return output;
 	}
 
 	private static String getTruthValues(String expression) {
@@ -305,10 +328,10 @@ public class Main {
 		return values;
 	}
 
-	private static String negate(String in) {
+	private static String negate(String input) {
 		String result = "";
-		for (int i = 0; i < in.length(); i++) {
-			char c = in.charAt(i);
+		for (int i = 0; i < input.length(); i++) {
+			char c = input.charAt(i);
 			if (c == 'T') {
 				result += 'F';
 			} else {
@@ -318,11 +341,11 @@ public class Main {
 		return result;
 	}
 
-	private static String or(String s1, String s2) {
+	private static String or(String input1, String input2) {
 		String result = "";
-		for (int i = 0; i < s1.length(); i++) {
-			char a = s1.charAt(i);
-			char b = s2.charAt(i);
+		for (int i = 0; i < input1.length(); i++) {
+			char a = input1.charAt(i);
+			char b = input2.charAt(i);
 			if (a == 'T' || b == 'T') {
 				result += 'T';
 			} else {
@@ -332,11 +355,11 @@ public class Main {
 		return result;
 	}
 
-	private static String and(String s1, String s2) {
+	private static String and(String input1, String input2) {
 		String result = "";
-		for (int i = 0; i < s1.length(); i++) {
-			char a = s1.charAt(i);
-			char b = s2.charAt(i);
+		for (int i = 0; i < input1.length(); i++) {
+			char a = input1.charAt(i);
+			char b = input2.charAt(i);
 			if (a == 'T' && b == 'T') {
 				result += 'T';
 			} else {
