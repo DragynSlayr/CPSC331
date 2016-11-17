@@ -105,7 +105,7 @@ public class Main {
 		}
 
 		// Calculate the number of truth values based on the number of variables
-		numTruthValues = power(2, variables.size());
+		numTruthValues = (int) Math.pow(2, variables.size());
 	}
 
 	private static void evaluate() {
@@ -131,6 +131,9 @@ public class Main {
 			} else {
 				// Get the key for the expression
 				String key = IDENTIFIER + (i - variables.size());
+
+				// Set the column header to the expression at the index
+				truthTable[0][i] = key;
 
 				// Set values to be the evaluated truth values of the expression
 				values = getTruthValues(expressions.get(key));
@@ -284,7 +287,7 @@ public class Main {
 
 	private static String getTruthColumn(char c) {
 		String values = "";
-		int split = numTruthValues / power(2, indexOf(variables, c) + 1);
+		int split = (int) (numTruthValues / Math.pow(2, indexOf(variables, c) + 1));
 		int counter = 0;
 		boolean isTrue = true;
 		for (int i = 0; i < numTruthValues; i++) {
@@ -339,20 +342,6 @@ public class Main {
 			} else {
 				result += 'F';
 			}
-		}
-		return result;
-	}
-
-	private static int power(int base, int power) {
-		if (base == 0) {
-			return 0;
-		}
-		if (power == 0) {
-			return 1;
-		}
-		int result = base;
-		for (int i = 1; i < power; i++) {
-			result *= base;
 		}
 		return result;
 	}
