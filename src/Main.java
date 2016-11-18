@@ -277,6 +277,17 @@ public class Main {
 		}
 	}
 
+	/*
+	 * Finds an object's position in a List
+	 * 
+	 * Pre-Condition:
+	 * ~ list is a List
+	 * ~ object is of the same type as list
+	 * 
+	 * Post-Condition
+	 * ~ list, object have not been modified
+	 * ~ returns object position in list if found, -1 otherwise
+	 */
 	private static <E> int indexOf(List<E> list, E object) {
 		// Initialize index
 		int index = -1;
@@ -310,6 +321,17 @@ public class Main {
 		}
 	}
 
+	/*
+	 * Detects if an object is in a Map
+	 * 
+	 * Pre-Condition:
+	 * ~ map is a Map
+	 * ~ object has the same type as the map's values
+	 * 
+	 * Post-Condition:
+	 * ~ map, object have not been modified
+	 * ~ true is returned if the object is in map, false otherwise
+	 */
 	private static <K, V> boolean contains(Map<K, V> map, V object) {
 		// Initialize found boolean
 		boolean found = false;
@@ -331,6 +353,16 @@ public class Main {
 		return found;
 	}
 
+	/*
+	 * Converts an infix expression to post-fix notation
+	 * 
+	 * Pre-Condition:
+	 * ~ input is a string with balanced brackets
+	 * 
+	 * Post-Condition:
+	 * ~ input has not been changed
+	 * ~ a post-fix version of input is returned
+	 */
 	private static String toPostfix(String input) {
 		// Initialize output string
 		String output = "";
@@ -365,6 +397,16 @@ public class Main {
 		return output;
 	}
 
+	/*
+	 * Calculates a logical expression's truth values
+	 * 
+	 * Pre-Condition:
+	 * ~ expression is a logic expression with balanced brackets
+	 * 
+	 * Post-Condition:
+	 * ~ expression has not been modified
+	 * ~ a string of truth values for the expression are returned
+	 */
 	private static String getTruthValues(String expression) {
 		// Initialize stack for truth values
 		Stack<String> truthValues = new Stack<String>();
@@ -418,6 +460,18 @@ public class Main {
 		return truthValues.pop();
 	}
 
+	/*
+	 * Gets the truth values for a single independent variable
+	 * 
+	 * Pre-Condition:
+	 * ~ c is an independent variable
+	 * ~ c occurs in the list of variables
+	 * ~ numTruthValues is defined
+	 * 
+	 * Post-Condition:
+	 * ~ c, variables, numTruthValues have not been changed
+	 * ~ the truth values of c are returned
+	 */
 	private static String getTruthColumn(char c) {
 		// Initialize string for truth values
 		String values = "";
@@ -444,9 +498,8 @@ public class Main {
 				isTrue = !isTrue;
 			}
 
-			// Add the first character of the string representation of the
-			// boolean to the values
-			values += String.valueOf(isTrue).charAt(0);
+			// Prepend current truth value to values
+			values += (isTrue) ? 'T' : 'F';
 
 			// Increment counter
 			counter++;
@@ -456,6 +509,16 @@ public class Main {
 		return values.toUpperCase();
 	}
 
+	/*
+	 * Negates a string
+	 * 
+	 * Pre-Condition:
+	 * ~ input is a string of values either "T" or "F"
+	 * 
+	 * Post-Condition:
+	 * ~ input is unchanged
+	 * ~ a negated version of input is returned
+	 */
 	private static String negate(String input) {
 		// Initialize string for result
 		String result = "";
@@ -471,6 +534,16 @@ public class Main {
 		return result;
 	}
 
+	/*
+	 * ORs two strings
+	 * 
+	 * Pre-Condition:
+	 * ~ input1, input2 are strings of values either "T" or "F"
+	 * 
+	 * Post-Condition:
+	 * ~ input1, input2 are unchanged
+	 * ~ a string containing the OR of string1 and string2 is returned
+	 */
 	private static String or(String input1, String input2) {
 		// Initialize string for result
 		String result = "";
@@ -490,6 +563,16 @@ public class Main {
 		return result;
 	}
 
+	/*
+	 * ANDs two strings
+	 * 
+	 * Pre-Condition:
+	 * ~ input1, input2 are strings of values either "T" or "F"
+	 * 
+	 * Post-Condition:
+	 * ~ input1, input2 are unchanged
+	 * ~ a string containing the AND of string1 and string2 is returned
+	 */
 	private static String and(String input1, String input2) {
 		// Initialize string for result
 		String result = "";
