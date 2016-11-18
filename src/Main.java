@@ -465,6 +465,7 @@ public class Main {
 	 * 
 	 * Pre-Condition:
 	 * ~ c is an independent variable
+	 * ~ variables is a list of independent variables
 	 * ~ c occurs in the list of variables
 	 * ~ numTruthValues is defined
 	 * 
