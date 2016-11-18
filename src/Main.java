@@ -49,6 +49,15 @@ public class Main {
 		printTruthTable();
 	}
 
+	/*
+	 * Gets a string from the user, this represents a logical expression
+	 * 
+	 * Pre-Condition:
+	 * ~ input has been declared but not initialized
+	 * 
+	 * Post-Condition:
+	 * ~ input has the user's value
+	 */
 	private static void getInput() {
 		// Declare Scanner object for taking input
 		Scanner keyb = new Scanner(System.in);
@@ -61,6 +70,19 @@ public class Main {
 		keyb.close();
 	}
 
+	/*
+	 * Finds all independent variables and sub-expressions present in the user's input
+	 * 
+	 * Pre-Condition:
+	 * ~ variables, expressions, numTruthValues have been declared but not initialized
+	 * ~ input, IDENTIFIER have values
+	 * 
+	 * Post-Condition:
+	 * ~ variables is a set of independent variables
+	 * ~ expressions is a set of sub-expressions
+	 * ~ numTruthValues is 2^(number of independent variables)
+	 * ~ input, IDENTIFIER have not changed value
+	 */
 	private static void parse() {
 		// Initialize independent variables list
 		variables = new LinkedList<Character>();
@@ -110,6 +132,17 @@ public class Main {
 		numTruthValues = (int) Math.pow(2, variables.size());
 	}
 
+	/*
+	 * Constructs a truth table by evaluating the variables and expressions
+	 * 
+	 * Pre-Condition:
+	 * ~ truthTable has been declared but not initialized
+	 * ~ variables, expressions, numTruthValues, IDENTIFIER have values
+	 * 
+	 * Post-Condition:
+	 * ~ truthTable is complete and correct
+	 * ~ variables, expressions, numTruthValues, IDENTIFIER have not been modified
+	 */
 	private static void evaluate() {
 		// Initialize the truth table with the correct dimensions
 		truthTable = new String[1 + numTruthValues][variables.size() + expressions.size()];
@@ -153,6 +186,16 @@ public class Main {
 		}
 	}
 
+	/*
+	 * Prints the independent variables
+	 * 
+	 * Pre-Condition:
+	 * ~ variables has values
+	 * 
+	 * Post-Condition:
+	 * ~ variables has not been modified
+	 * ~ all of the values in variables have been printed
+	 */
 	private static void printVariables() {
 		// Print the independent variables
 		System.out.println("Output:\nSet of independent variables:");
@@ -168,6 +211,16 @@ public class Main {
 		}
 	}
 
+	/*
+	 * Prints the sub-expressions
+	 * 
+	 * Pre-Condition:
+	 * ~ expressions, IDENTIFER have values
+	 * 
+	 * Post-Condition:
+	 * ~ expressions, IDENTIFER have not been modified
+	 * ~ all of the values of expressions have been printed
+	 */
 	private static void printExpressions() {
 		// Print the sub-expressions
 		System.out.println("Set of logical subexpressions and logical expression:");
@@ -183,6 +236,16 @@ public class Main {
 		}
 	}
 
+	/*
+	 * Prints the truth table
+	 * 
+	 * Pre-Condition:
+	 * ~ truthTable has values
+	 * 
+	 * Post-Condition:
+	 * ~ truthTable has not been modified
+	 * ~ truthTable has been printed
+	 */
 	private static void printTruthTable() {
 		// Print the truth table
 		System.out.println("Truth Table:");
