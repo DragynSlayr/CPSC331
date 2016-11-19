@@ -292,33 +292,23 @@ public class Main {
 		// Initialize index
 		int index = -1;
 
-		// Initialize found boolean
-		boolean found = false;
-
 		// Get iterator from list
 		Iterator<E> iterator = list.iterator();
 
 		// Traverse list until the object is found or all elements are used
-		while (iterator.hasNext() && !found) {
-
-			// Compare next element to the object
-			if (iterator.next().equals(object)) {
-				// Set found when the object has been located
-				found = true;
-			}
-
+		while (iterator.hasNext()) {
 			// Increment index
 			index++;
+			
+			// Compare next element to the object
+			if (iterator.next().equals(object)) {
+				// Return object index when found
+				return index;
+			}
 		}
-
-		// Determine if the object has been found
-		if (found) {
-			// Return the index when the object is found
-			return index;
-		} else {
-			// Return -1 when the object is not found
-			return -1;
-		}
+		
+		// Return -1 when the object is not found
+		return -1;
 	}
 
 	/*
@@ -333,24 +323,21 @@ public class Main {
 	 * ~ true is returned if the object is in map, false otherwise
 	 */
 	private static <K, V> boolean contains(Map<K, V> map, V object) {
-		// Initialize found boolean
-		boolean found = false;
-
 		// Get iterator from map's keys
 		Iterator<K> iterator = map.keySet().iterator();
 
 		// Traverse map until the object is found or all elements are used
-		while (iterator.hasNext() && !found) {
+		while (iterator.hasNext()) {
 
 			// Compare value of next key to the object
 			if (map.get(iterator.next()).equals(object)) {
-				// Set found when the object is in the map
-				found = true;
+				// Return true when the object is found
+				return true;
 			}
 		}
 
-		// True if the object is in the map, false other wise
-		return found;
+		// Return false if the object has not been found
+		return false;
 	}
 
 	/*
