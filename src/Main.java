@@ -282,7 +282,7 @@ public class Main {
 	 * 
 	 * Pre-Condition:
 	 * ~ list is a List
-	 * ~ object is of the same type as list
+	 * ~ object is of the same type as list's values
 	 * 
 	 * Post-Condition
 	 * ~ list, object have not been modified
@@ -494,7 +494,7 @@ public class Main {
 		}
 
 		// Return the truth values
-		return values.toUpperCase();
+		return values;
 	}
 
 	/*
