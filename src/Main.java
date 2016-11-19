@@ -453,20 +453,20 @@ public class Main {
 	 * Pre-Condition:
 	 * ~ c is an independent variable
 	 * ~ variables is a list of independent variables
-	 * ~ c occurs in the list of variables
+	 * ~ variable occurs in the list of variables
 	 * ~ numTruthValues is defined
 	 * 
 	 * Post-Condition:
-	 * ~ c, variables, numTruthValues have not been changed
+	 * ~ variable, variables, numTruthValues have not been changed
 	 * ~ the truth values of c are returned
 	 */
-	private static String getTruthColumn(char c) {
+	private static String getTruthColumn(char variable) {
 		// Initialize string for truth values
 		String values = "";
 
 		// Calculate the number of trues before switching to falses, based on
 		// the variable number and the total truth values
-		int numTrues = (int) (numTruthValues / Math.pow(2, indexOf(variables, c) + 1));
+		int numTrues = (int) (numTruthValues / Math.pow(2, indexOf(variables, variable) + 1));
 
 		// Initialize counter for each value
 		int counter = 0;
