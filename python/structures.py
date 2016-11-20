@@ -98,6 +98,17 @@ class List:
         else:
             return None
 
+    def get(self, index):
+        idx = 0
+        temp = self.head
+        iterator = self.iterator()
+        while(iterator.hasNext()):
+            value = iterator.getNext()
+            if idx == index:
+                return value
+            idx += 1
+        return None
+
     def isEmpty(self):
         return (self.head == None)
 
