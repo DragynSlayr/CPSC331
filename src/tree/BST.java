@@ -48,6 +48,27 @@ public class BST {
 		}
 	}
 
+	public void insertRecursively(BSTNode<Integer> root, int id) {
+		if (root == null) {
+			root = new BSTNode<Integer>(id);
+			return;
+		} else if (root.data < id) {
+			if (root.left == null) {
+				root.left = new BSTNode<Integer>(id);
+				return;
+			} else {
+				insertRecursively(root.left, id);
+			}
+		} else if (root.data > id) {
+			if (root.right == null) {
+				root.right = new BSTNode<Integer>(id);
+				return;
+			} else {
+				insertRecursively(root.right, id);
+			}
+		}
+	}
+
 	public boolean isEmpty() {
 		return (root == null);
 	}
