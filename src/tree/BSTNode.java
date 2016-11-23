@@ -1,4 +1,4 @@
-package search;
+package tree;
 
 public class BSTNode<E> {
 
