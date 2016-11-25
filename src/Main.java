@@ -1,4 +1,5 @@
 import java.io.File;
+import java.io.PrintStream;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.Scanner;
@@ -14,8 +15,10 @@ public class Main {
 		getInput();
 		initStructures();
 		readCSVFile();
-		printMatrix();
-		printList();
+		printMPV();
+		printLPV();
+		writeCSVFile(matrixAsString(), "AdjacencyMatrix.csv");
+		writeCSVFile(listAsString(), "AdjacencyList.csv");
 	}
 
 	private static void getInput() {
@@ -76,8 +79,53 @@ public class Main {
 		}
 	}
 
-	private static void printMatrix() {
+	private static void printMPV() {
+		int max = 0;
+		for (int i = 0; i < adjacencyList.length; i++) {
+			if (adjacencyList[i].size() > max) {
+				max = adjacencyList[i].size();
+			}
+		}
+
+		System.out.printf("Number of neighbors for MPV: %d\n\nMPV, Neighbors\n", max);
+
+		for (int i = 0; i < adjacencyList.length; i++) {
+			if (adjacencyList[i].size() == max) {
+				System.out.print(i);
+				for (int j = 0; j < adjacencyList[i].size(); j++) {
+					System.out.print("," + adjacencyList[i].get(j));
+				}
+				System.out.println();
+			}
+		}
+
 		System.out.println();
+	}
+
+	private static void printLPV() {
+		int min = Integer.MAX_VALUE;
+		for (int i = 0; i < adjacencyList.length; i++) {
+			if (adjacencyList[i].size() < min) {
+				min = adjacencyList[i].size();
+			}
+		}
+
+		System.out.printf("Number of neighbors for LPV: %d\n\nLPV, Neighbors\n", min);
+
+		for (int i = 0; i < adjacencyList.length; i++) {
+			if (adjacencyList[i].size() == min) {
+				System.out.print(i);
+				for (int j = 0; j < adjacencyList[i].size(); j++) {
+					System.out.print("," + adjacencyList[i].get(j));
+				}
+				System.out.println();
+			}
+		}
+
+		System.out.println();
+	}
+
+	private static String matrixAsString() {
 		String out = "X";
 		for (int i = 0; i < numVertices; i++) {
 			out += "," + i;
@@ -90,19 +138,28 @@ public class Main {
 			}
 			out += "\n";
 		}
-		System.out.println(out);
+		return out.substring(0, out.length() - 1);
 	}
 
-	private static void printList() {
-		System.out.println();
+	private static String listAsString() {
 		String out = "";
-		for (int i = 0; i < numVertices; i++) {
+		for (int i = 0; i < adjacencyList.length; i++) {
 			out += i;
 			for (int j = 0; j < adjacencyList[i].size(); j++) {
 				out += "," + adjacencyList[i].get(j);
 			}
 			out += "\n";
 		}
-		System.out.println(out);
+		return out.substring(0, out.length() - 1);
+	}
+
+	private static void writeCSVFile(String out, String filePath) {
+		try {
+			PrintStream fileWriter = new PrintStream(new File(filePath));
+			fileWriter.print(out);
+			fileWriter.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 }
