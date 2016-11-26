@@ -25,7 +25,7 @@ public class Main {
 		Scanner keyb = new Scanner(System.in);
 
 		System.out.print("Number of Vertices: ");
-		numVertices = Integer.parseInt(keyb.nextLine()) + 1;
+		numVertices = Integer.parseInt(keyb.nextLine());
 
 		System.out.print("Input CSV File: ");
 		fileName = keyb.nextLine();
