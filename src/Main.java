@@ -1,93 +1,171 @@
 import java.io.File;
+import java.io.IOException;
 import java.io.PrintStream;
-import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.Scanner;
 
 public class Main {
 
+	// Global variables for graph description
 	private static String fileName;
 	private static int numVertices;
+
+	// Representations of the graph
 	private static int[][] adjacencyMatrix;
 	private static LinkedList<Integer>[] adjacencyList;
 
 	public static void main(String[] args) {
+		// Get file name of graph and the number of vertices from the user
 		getInput();
+
+		// Initialize the structures that represent the graph
 		initStructures();
+
+		// Read the graph from the file
 		readCSVFile();
+
+		// Find and print the most popular vertices
 		printMPV();
+
+		// Find and print the least popular vertices
 		printLPV();
-		writeCSVFile(matrixAsString(), "AdjacencyMatrix.csv");
-		writeCSVFile(listAsString(), "AdjacencyList.csv");
+
+		// Get the string representation of the structures
+		String matrix = matrixToString();
+		String list = listToString();
+
+		// Write the structures to a csv file
+		writeCSVFile(matrix, "AdjacencyMatrix.csv");
+		writeCSVFile(list, "AdjacencyList.csv");
 	}
 
 	private static void getInput() {
+		// Create a Scanner for input
 		Scanner keyb = new Scanner(System.in);
 
+		// Get the number of vertices from the user
 		System.out.print("Number of Vertices: ");
 		numVertices = Integer.parseInt(keyb.nextLine());
 
+		// Get the name of the input file from the user
 		System.out.print("Input CSV File: ");
 		fileName = keyb.nextLine();
 
+		// Close the Scanner object
 		keyb.close();
 	}
 
 	private static void initStructures() {
+		// Set the size of the structures
 		adjacencyMatrix = new int[numVertices][numVertices];
-		for (int i = 0; i < adjacencyMatrix.length; i++) {
-			for (int j = 0; j < adjacencyMatrix[i].length; j++) {
-				adjacencyMatrix[i][j] = 0;
-			}
-		}
-
 		adjacencyList = new LinkedList[numVertices];
-		for (int i = 0; i < numVertices; i++) {
+
+		// Counter for outer loop
+		int i = 0;
+
+		// Loop through rows of matrix
+		while (i < adjacencyMatrix.length) {
+
+			// Create an empty list at the index
 			adjacencyList[i] = new LinkedList<Integer>();
+
+			// Counter for inner loop
+			int j = 0;
+
+			// Loop through columns of each row of the matrix
+			while (j < adjacencyMatrix[i].length) {
+
+				// Set current index to default value
+				adjacencyMatrix[i][j] = 0;
+
+				// Increment counter
+				j++;
+			}
+
+			// Increment counter
+			i++;
 		}
 	}
 
 	private static void readCSVFile() {
 		try {
+			// Create a Scanner for the input file
 			Scanner fileReader = new Scanner(new File(fileName));
 
+			// Loop through all lines in the file
 			while (fileReader.hasNext()) {
+
+				// Get the next line and split at ','
 				String[] vertices = fileReader.next().split(",");
 
+				// Get coordinate from the string array
 				int x = Integer.parseInt(vertices[0]);
 				int y = Integer.parseInt(vertices[1]);
 
+				// Set indices in the array to 1, indicating a connection
 				adjacencyMatrix[x][y] = 1;
 				adjacencyMatrix[y][x] = 1;
 
+				// Set connection between vertices in the list
 				adjacencyList[x].add(y);
 				adjacencyList[y].add(x);
 			}
 
-			for (int i = 0; i < adjacencyList.length; i++) {
-				adjacencyList[i] = sortList(adjacencyList[i]);
-			}
-			
+			// Close file scanner
 			fileReader.close();
-		} catch (Exception e) {
-			e.printStackTrace();
+
+			// Counter for loop
+			int i = 0;
+
+			// Loop through array of lists
+			while (i < adjacencyList.length) {
+
+				// Sort list at index
+				adjacencyList[i] = sortList(adjacencyList[i]);
+
+				// Increment counter
+				i++;
+			}
+		} catch (IOException ioe) {
+			// Print error message when a file isn't available
+			System.out.println(ioe.getMessage());
 		}
 	}
-	
+
 	private static LinkedList<Integer> sortList(LinkedList<Integer> in) {
+		// Create a new list
 		LinkedList<Integer> out = new LinkedList<Integer>();
-		
+
+		// Loop until input list is empty
 		while (!in.isEmpty()) {
+
+			// Set index of minimum value
 			int min = 0;
-			for (int i = 0; i < in.size(); i++) {
+
+			// Counter for loop
+			int i = 0;
+
+			// Loop through input list
+			while (i < in.size()) {
+
+				// Compare current index to minimum
 				if (in.get(i) < in.get(min)) {
+					// Set minimum index to current index
 					min = i;
 				}
+
+				// Increment counter
+				i++;
 			}
+
+			// Add the element at the minimum index to the output list
 			out.add(in.get(min));
+
+			// Remove the element at the minimum index
 			in.remove(min);
 		}
-		
+
+		// Return output
 		return out;
 	}
 
@@ -137,7 +215,7 @@ public class Main {
 		System.out.println();
 	}
 
-	private static String matrixAsString() {
+	private static String matrixToString() {
 		String out = "X";
 		for (int i = 0; i < numVertices; i++) {
 			out += "," + i;
@@ -153,7 +231,7 @@ public class Main {
 		return out.substring(0, out.length() - 1);
 	}
 
-	private static String listAsString() {
+	private static String listToString() {
 		String out = "";
 		for (int i = 0; i < adjacencyList.length; i++) {
 			out += i;
@@ -167,11 +245,17 @@ public class Main {
 
 	private static void writeCSVFile(String out, String filePath) {
 		try {
+			// Create a stream for writing to the output file
 			PrintStream fileWriter = new PrintStream(new File(filePath));
+
+			// Write the output to the stream
 			fileWriter.print(out);
+
+			// Close the stream
 			fileWriter.close();
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (IOException ioe) {
+			// Print error message when a file isn't available
+			System.out.println(ioe.getMessage());
 		}
 	}
 }
