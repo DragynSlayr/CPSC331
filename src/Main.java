@@ -231,6 +231,7 @@ public class Main {
 		return out.substring(0, out.length() - 1);
 	}
 
+	// TODO: Check this section
 	// Do listToString
 	private static String listToString() {
 
@@ -254,7 +255,7 @@ public class Main {
 			out += "\n";
 		}
 
-		// TODO:comment
+		// TODO: comment
 		return out.substring(0, out.length() - 1);
 	}
 

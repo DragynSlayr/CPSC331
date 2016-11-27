@@ -18,6 +18,7 @@ def comment(contents):
         if len(line.strip()) != 0:
             out.append(line)
     out2 = []
+    out2.append("//TODO: Check this section\n")
     for line in out:
         stripped = line.strip()
         if len(stripped) > 0:   
@@ -49,14 +50,15 @@ def comment(contents):
                     message = "\n// Append " + splitted[2][:-1] + " to " + splitted[0]
                     out2.append(message + "\n" + line)
                 else:
-                    out2.append("\n//TODO:comment\n" + line)
+                    out2.append("\n//TODO: comment\n" + line)
                 
     return out2
 
-def main(fileName):
-    fileContents = readFile(fileName)
+def main():
+    fileContents = readFile(input("File to Comment: "))
     fileContents = comment(fileContents)
     writeFile(fileContents)
+    print("Done")
     
 if __name__ == '__main__':
-    main("Test.java")
+    main()

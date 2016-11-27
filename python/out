@@ -1,3 +1,4 @@
+//TODO: Check this section
 // Do listToString
 	private static String listToString() {
 
@@ -21,6 +22,6 @@
 			out += "\n";
 		}
 
-//TODO:comment
+//TODO: comment
 		return out.substring(0, out.length() - 1);
 	}
