@@ -64,19 +64,31 @@ public class Main {
 				adjacencyList[y].add(x);
 			}
 
-			for (int i = 0; i < numVertices; i++) {
-				adjacencyList[i].sort(new Comparator<Integer>() {
-					@Override
-					public int compare(Integer o1, Integer o2) {
-						return o1.compareTo(o2);
-					}
-				});
+			for (int i = 0; i < adjacencyList.length; i++) {
+				adjacencyList[i] = sortList(adjacencyList[i]);
 			}
-
+			
 			fileReader.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	private static LinkedList<Integer> sortList(LinkedList<Integer> in) {
+		LinkedList<Integer> out = new LinkedList<Integer>();
+		
+		while (!in.isEmpty()) {
+			int min = 0;
+			for (int i = 0; i < in.size(); i++) {
+				if (in.get(i) < in.get(min)) {
+					min = i;
+				}
+			}
+			out.add(in.get(min));
+			in.remove(min);
+		}
+		
+		return out;
 	}
 
 	private static void printMPV() {
