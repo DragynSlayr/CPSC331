@@ -170,92 +170,210 @@ public class Main {
 	}
 
 	private static void printMPV() {
+		// Set starting max to low value, every value is greater or equal to
+		// this
 		int max = 0;
-		for (int i = 0; i < adjacencyList.length; i++) {
+
+		// Counter for loop
+		int i = 0;
+
+		// Loop through array
+		while (i < adjacencyList.length) {
+
+			// Compare length of current list to max
 			if (adjacencyList[i].size() > max) {
+				// Update max
 				max = adjacencyList[i].size();
 			}
+
+			// Increment counter
+			i++;
 		}
 
+		// Print description
 		System.out.printf("Number of neighbors for MPV: %d\n\nMPV, Neighbors\n", max);
 
-		for (int i = 0; i < adjacencyList.length; i++) {
+		// Reset counter
+		i = 0;
+
+		// Loop through array
+		while (i < adjacencyList.length) {
+
+			// Compare list size to biggest list
 			if (adjacencyList[i].size() == max) {
+
+				// Print current outer index
 				System.out.print(i);
-				for (int j = 0; j < adjacencyList[i].size(); j++) {
+
+				// Counter for inner loop
+				int j = 0;
+
+				// Traverse list
+				while (j < adjacencyList[i].size()) {
+					// Print current element
 					System.out.print("," + adjacencyList[i].get(j));
+
+					// Increment counter
+					j++;
 				}
+
+				// Print new line
 				System.out.println();
 			}
+
+			// Increment counter
+			i++;
 		}
 
+		// Print new line
 		System.out.println();
 	}
 
 	private static void printLPV() {
+		// Set starting max to high value, every value is less than or equal to
+		// this
 		int min = Integer.MAX_VALUE;
-		for (int i = 0; i < adjacencyList.length; i++) {
+
+		// Counter for loop
+		int i = 0;
+
+		// Loop through array
+		while (i < adjacencyList.length) {
+
+			// Compare length of current list to min
 			if (adjacencyList[i].size() < min) {
+				// Update min
 				min = adjacencyList[i].size();
 			}
+
+			// Increment counter
+			i++;
 		}
 
+		// Print description
 		System.out.printf("Number of neighbors for LPV: %d\n\nLPV, Neighbors\n", min);
 
-		for (int i = 0; i < adjacencyList.length; i++) {
+		// Reset counter
+		i = 0;
+
+		// Loop through array
+		while (i < adjacencyList.length) {
+
+			// Compare list size to smallest list
 			if (adjacencyList[i].size() == min) {
+
+				// Print current outer index
 				System.out.print(i);
-				for (int j = 0; j < adjacencyList[i].size(); j++) {
+
+				// Counter for inner loop
+				int j = 0;
+
+				// Traverse list
+				while (j < adjacencyList[i].size()) {
+					// Print current element
 					System.out.print("," + adjacencyList[i].get(j));
+
+					// Increment counter
+					j++;
 				}
+
+				// Print new line
 				System.out.println();
 			}
+
+			// Increment counter
+			i++;
 		}
 
+		// Print new line
 		System.out.println();
 	}
 
 	private static String matrixToString() {
+		// String for output
 		String out = "X";
-		for (int i = 0; i < numVertices; i++) {
+
+		// Counter for loop
+		int i = 0;
+
+		// Loop through vertices
+		while (i < numVertices) {
+			// Append current vertex to out
 			out += "," + i;
+
+			// Increment counter
+			i++;
 		}
+
+		// Append line to out
 		out += "\n";
-		for (int i = 0; i < adjacencyMatrix.length; i++) {
+
+		// Reset counter
+		i = 0;
+
+		// Loop through rows of matrix
+		while (i < adjacencyMatrix.length) {
+
+			// Append current index to out
 			out += i;
-			for (int j = 0; j < adjacencyMatrix[i].length; j++) {
+
+			// Counter for inner loop
+			int j = 0;
+
+			// Loop through columns of each row
+			while (j < adjacencyMatrix[i].length) {
+				// Append current element to out
 				out += "," + adjacencyMatrix[i][j];
+
+				// Increment counter
+				j++;
 			}
+
+			// Append new line
 			out += "\n";
+
+			// Increment counter
+			i++;
 		}
+
+		// Return output without trailing '\n'
 		return out.substring(0, out.length() - 1);
 	}
 
-	// TODO: Check this section
-	// Do listToString
 	private static String listToString() {
-
-		// Create String for out
+		// String for output
 		String out = "";
 
-		// Loop until i < adjacencyList.length
-		for (int i = 0; i < adjacencyList.length; i++) {
+		// Counter for outer loop
+		int i = 0;
+
+		// Loop through array
+		while (i < adjacencyList.length) {
 
 			// Append i to out
 			out += i;
 
-			// Loop until j < adjacencyList[i].size()
-			for (int j = 0; j < adjacencyList[i].size(); j++) {
+			// Counter for inner loop
+			int j = 0;
 
-				// Append ", to out
+			// Loop through each list
+			while (j < adjacencyList[i].size()) {
+
+				// Append current element to out
 				out += "," + adjacencyList[i].get(j);
+
+				// Increment counter
+				j++;
 			}
 
-			// Append "\n" to out
+			// Append line break to out
 			out += "\n";
+
+			// Increment counter
+			i++;
 		}
 
-		// TODO: comment
+		// Return the output string without the trailing '\n'
 		return out.substring(0, out.length() - 1);
 	}
 
