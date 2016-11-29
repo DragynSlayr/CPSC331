@@ -39,6 +39,15 @@ public class Main {
 		writeCSVFile(list, "AdjacencyList.csv");
 	}
 
+	/*
+	 * Gets number of vertices and name of input file from user
+	 * 
+	 * Pre-Condition:
+	 * ~ numVertices, fileName have been declared
+	 * 
+	 * Post-Condition:
+	 * ~ numVertices, fileName have the user's values
+	 */
 	private static void getInput() {
 		// Create a Scanner for input
 		Scanner keyb = new Scanner(System.in);
