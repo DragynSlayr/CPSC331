@@ -42,7 +42,7 @@ public class Main {
 	/*
 	 * Gets number of vertices and name of input file from user
 	 * 
-	 * Pre-Condition: test
+	 * Pre-Condition:
 	 * ~ numVertices, fileName have been declared
 	 * 
 	 * Post-Condition:
