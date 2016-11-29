@@ -36,10 +36,11 @@ def comment(contents):
                 elif "for" in stripped or "while" in stripped:
                     if "for" in stripped:
                         splitted = stripped.split(";")
-                        message = "\n// Loop until " + splitted[1][1:]
+                        message = "\n// Loop while " + splitted[1][1:]
                     else:
-                        splitted = stripped.split(" ")
-                        message = "\n// Loop until " + splitted[1][1:-2]
+                        idx1 = stripped.index('(') + 1
+                        idx2 = stripped.index('{') - 2
+                        message = "\n// Loop while " + stripped[idx1:idx2]
                     out2.append(message + "\n" + line)
                 elif re.search('String|int', stripped):
                     splitted = stripped.split(" ")
@@ -49,16 +50,21 @@ def comment(contents):
                     splitted = stripped.split(" ")
                     message = "\n// Append " + splitted[2][:-1] + " to " + splitted[0]
                     out2.append(message + "\n" + line)
+                elif stripped.endswith("++;"):
+                    idx = stripped.index('+')
+                    message = "\n// Increment " + stripped[:idx].strip()
+                    out2.append(message + "\n" + line)
                 else:
                     out2.append("\n//TODO: comment\n" + line)
-                
     return out2
 
-def main():
-    fileContents = readFile(input("File to Comment: "))
+def main(fileName = None):
+    if fileName == None:
+        fileContents = readFile(input("File to Comment: "))
+    else:
+        fileContents = readFile(fileName)
     fileContents = comment(fileContents)
     writeFile(fileContents)
-    print("Done")
     
 if __name__ == '__main__':
-    main()
+    main("Test.java")
