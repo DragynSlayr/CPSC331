@@ -279,6 +279,7 @@ public class Main {
 
 				// Traverse list
 				while (j < adjacencyList[i].size()) {
+					
 					// Print current element
 					System.out.print("," + adjacencyList[i].get(j));
 
@@ -307,6 +308,7 @@ public class Main {
 
 		// Loop through vertices
 		while (i < numVertices) {
+			
 			// Append current vertex to out
 			out += "," + i;
 
@@ -331,6 +333,7 @@ public class Main {
 
 			// Loop through columns of each row
 			while (j < adjacencyMatrix[i].length) {
+				
 				// Append current element to out
 				out += "," + adjacencyMatrix[i][j];
 
