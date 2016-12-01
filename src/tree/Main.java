@@ -1,21 +1,24 @@
 package tree;
 
+import java.util.Iterator;
+import java.util.LinkedList;
+
 public class Main {
 
 	public static void main(String[] args) {
-		/*
-		BST b = new BST();
-		b.insert(4);
-		b.insert(5);
-		b.insert(3);
-		b.display(b.root);
-		System.out.println();
-		*/
+		BinarySearchTree<Integer> tree = new BinarySearchTree<Integer>();
 
-		BST c = new BST();
-		c.insertRecursively(c.root, 4);
-		c.insertRecursively(c.root, 5);
-		c.insertRecursively(c.root, 3);
-		c.display(c.root);
+		Integer[] elements = { 10, 3, 20, 5, 2, 15, 30 };
+		tree.insertAll(elements);
+
+		System.out.println(tree);
+
+		LinkedList<String> sorted = new LinkedList<String>();
+		tree.getElements(sorted);
+
+		Iterator<String> i = sorted.iterator();
+		while (i.hasNext()) {
+			System.out.printf("%d ", Integer.parseInt(i.next()));
+		}
 	}
 }
