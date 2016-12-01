@@ -295,7 +295,7 @@ public class Main {
 	private static void printLPV() {
 		// Set starting max to high value, every value is less than or equal to
 		// this
-		int min = Integer.MAX_VALUE;
+		int min = numVertices - 1;
 
 		// Counter for loop
 		int i = 0;
@@ -348,9 +348,6 @@ public class Main {
 			// Increment counter
 			i++;
 		}
-
-		// Print new line
-		System.out.println();
 	}
 
 	/*
