@@ -2,23 +2,34 @@ package tree;
 
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.Random;
 
 public class Main {
 
 	public static void main(String[] args) {
+		Random rand = new Random();
 		BinarySearchTree<Integer> tree = new BinarySearchTree<Integer>();
-
-		Integer[] elements = { 10, 3, 20, 5, 2, 15, 30 };
+		LinkedList<Integer> elements = new LinkedList<Integer>();
+		int num = 100;
+		for (int i = 0; i < num; i++) {
+			elements.add(rand.nextInt(num * 2) - num);
+		}
 		tree.insertAll(elements);
-
-		System.out.println(tree);
 
 		LinkedList<String> sorted = new LinkedList<String>();
 		tree.getElements(sorted);
 
+		String s = "";
+		int count = 0;
 		Iterator<String> i = sorted.iterator();
 		while (i.hasNext()) {
-			System.out.printf("%d ", Integer.parseInt(i.next()));
+			s += i.next() + " ";
+			count++;
+			if (count == 10) {
+				count = 0;
+				s += "\n";
+			}
 		}
+		System.out.println(s);
 	}
 }
