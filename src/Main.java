@@ -64,6 +64,20 @@ public class Main {
 		keyb.close();
 	}
 
+	/*
+	 * Sizes and resets adjacency matrix and list
+	 * 
+	 * Pre-Condition:
+	 * ~ adjacencyMatrix, adjacencyList have been declared but not initialized
+	 * ~ numVertices has an integer value
+	 * 
+	 * Post-Condition:
+	 * ~ adjacencyMatrix is numVertices tall and wide
+	 * ~ adjacencyList has length of numVertices
+	 * ~ adjacencyMatrix is filled with zeroes
+	 * ~ adjacencyList is filled with empty LinkedLists
+	 * ~ numVertices has not changed
+	 */
 	private static void initStructures() {
 		// Set the size of the structures
 		adjacencyMatrix = new int[numVertices][numVertices];
@@ -96,6 +110,17 @@ public class Main {
 		}
 	}
 
+	/*
+	 * Reads values from a CSV file
+	 * 
+	 * Pre-Condition:
+	 * ~ fileName has a value
+	 * ~ adjacencyList, adjacencyMatrix have been initialized
+	 * 
+	 * Post-Condition:
+	 * ~ fileName has not changed
+	 * ~ adjacencyMatrix, adjacencyList describe the relations from the CSV file at fileName
+	 */
 	private static void readCSVFile() {
 		try {
 			// Create a Scanner for the input file
@@ -141,6 +166,15 @@ public class Main {
 		}
 	}
 
+	/*
+	 * Sorts a LinkedList of Integers
+	 * 
+	 * Pre-Condition:
+	 * ~ in is a LinkedList of Integers
+	 * 
+	 * Post-Condition:
+	 * ~ a sorted version of in is returned
+	 */
 	private static LinkedList<Integer> sortList(LinkedList<Integer> in) {
 		// Create a new list
 		LinkedList<Integer> out = new LinkedList<Integer>();
@@ -178,6 +212,16 @@ public class Main {
 		return out;
 	}
 
+	/*
+	 * Finds and prints the most popular vertices
+	 * 
+	 * Pre-Condition:
+	 * ~ adjacencyList has values
+	 * 
+	 * Post-Condition:
+	 * ~ most popular vertices have been found and printed
+	 * ~ adjacencyList has not been changed
+	 */
 	private static void printMPV() {
 		// Set starting max to low value, every value is greater or equal to
 		// this
@@ -238,6 +282,16 @@ public class Main {
 		System.out.println();
 	}
 
+	/*
+	 * Finds and prints the least popular vertices
+	 * 
+	 * Pre-Condition:
+	 * ~ adjacencyList has values
+	 * 
+	 * Post-Condition:
+	 * ~ least popular vertices have been found and printed
+	 * ~ adjacencyList has not been changed
+	 */
 	private static void printLPV() {
 		// Set starting max to high value, every value is less than or equal to
 		// this
@@ -299,6 +353,16 @@ public class Main {
 		System.out.println();
 	}
 
+	/*
+	 * Gets a CSV String representation of the adjacency matrix
+	 * 
+	 * Pre-Condition:
+	 * ~ numVerices, adjacencyMatrix have values
+	 * 
+	 * Post-Condition:
+	 * ~ numVertices, adjacencyMatrix have not been changed
+	 * ~ a String representation of adjacencyMatrix has been returned
+	 */
 	private static String matrixToString() {
 		// String for output
 		String out = "X";
@@ -352,6 +416,16 @@ public class Main {
 		return out.substring(0, out.length() - 1);
 	}
 
+	/*
+	 * Gets a CSV String representation of the adjacency list
+	 * 
+	 * Pre-Condition:
+	 * ~ adjacencyList has values
+	 * 
+	 * Post-Condition:
+	 * ~ adjacencyList has not been changed
+	 * ~ a String representation of adjacencyList has been returned
+	 */
 	private static String listToString() {
 		// String for output
 		String out = "";
@@ -389,6 +463,16 @@ public class Main {
 		return out.substring(0, out.length() - 1);
 	}
 
+	/*
+	 * Writes a String to a file
+	 * 
+	 * Pre-Condition:
+	 * ~ out, filePath are Strings
+	 * 
+	 * Post-Condition:
+	 * ~ out, filePath have not been modified
+	 * ~ out has been written to the file at filePath
+	 */
 	private static void writeCSVFile(String out, String filePath) {
 		try {
 			// Create a stream for writing to the output file
