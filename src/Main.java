@@ -4,10 +4,16 @@ import java.io.PrintStream;
 import java.util.LinkedList;
 import java.util.Scanner;
 
+//Name: 		Inderpreet Dhillon
+//UCID:  		10159608
+//Class:  			CPSC 331
+//Purpose:		This program is capable of reading a file of edges for a graph and then constructing an adjacency list and matrix
+//Usage: 		Enter the number of edges in the file as well as the absolute file path ('/' must be used as a directory separator)
+
 public class Main {
 
 	// Global variables for graph description
-	private static String fileName;
+	private static String fileName, pathName = "";
 	private static int numVertices;
 
 	// Representations of the graph
@@ -33,10 +39,13 @@ public class Main {
 		// Get the string representation of the structures
 		String matrix = matrixToString();
 		String list = listToString();
+		
+		// Find the output path
+		getPath();
 
 		// Write the structures to a csv file
-		writeCSVFile(matrix, "AdjacencyMatrix.csv");
-		writeCSVFile(list, "AdjacencyList.csv");
+		writeCSVFile(matrix, pathName + "AdjacencyMatrix.csv");
+		writeCSVFile(list, pathName + "AdjacencyList.csv");
 	}
 
 	/*
@@ -57,7 +66,7 @@ public class Main {
 		numVertices = Integer.parseInt(keyb.nextLine());
 
 		// Get the name of the input file from the user
-		System.out.print("Input CSV File: ");
+		System.out.print("Input CSV File (full path including extenstions, use '/' for separator): ");
 		fileName = keyb.nextLine();
 
 		// Close the Scanner object
@@ -460,6 +469,39 @@ public class Main {
 		return out.substring(0, out.length() - 1);
 	}
 
+	/*
+	 * Gets the path of the output file from the input file's path
+	 * 
+	 * Pre-Condition:
+	 * ~ fileName has been declared and initialized
+	 * ~ pathName has been declared and initialized to ""
+	 * 
+	 * Post-Condition:
+	 * ~ fileName is unchanged
+	 * ~ pathName is updated
+	 */
+	private static void getPath() {
+		// Split the file path at the separator
+		String[] parts = fileName.split("/");
+		
+		// Check if the file name has any separators
+		if (parts.length != 0) {
+			
+			// Counter for while loops
+			int index = 0;
+			
+			// Loop through all parts but the file name
+			while (index < parts.length - 1) {
+				
+				// Append the current part and '\'
+				pathName += parts[index] + "\\";
+				
+				// Increment index
+				index++;
+			}
+		}
+	}
+	
 	/*
 	 * Writes a String to a file
 	 * 
