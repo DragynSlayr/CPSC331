@@ -14,11 +14,11 @@ public class Main {
 
 	// Global variables for graph description
 	private static String fileName, pathName = "";
-	private static int numVertices;
+	private static short numVertices;
 
 	// Representations of the graph
-	private static int[][] adjacencyMatrix;
-	private static LinkedList<Integer>[] adjacencyList;
+	private static byte[][] adjacencyMatrix;
+	private static LinkedList<Short>[] adjacencyList;
 
 	public static void main(String[] args) {
 		// Get file name of graph and the number of vertices from the user
@@ -63,10 +63,10 @@ public class Main {
 
 		// Get the number of vertices from the user
 		System.out.print("Number of Vertices: ");
-		numVertices = Integer.parseInt(keyb.nextLine());
+		numVertices = Short.parseShort(keyb.nextLine());
 
 		// Get the name of the input file from the user
-		System.out.print("Input CSV File (full path including extenstions, use '/' for separator): ");
+		System.out.print("Input CSV File (full path including extensions, use '/' for separator): ");
 		fileName = keyb.nextLine();
 
 		// Close the Scanner object
@@ -89,20 +89,20 @@ public class Main {
 	 */
 	private static void initStructures() {
 		// Set the size of the structures
-		adjacencyMatrix = new int[numVertices][numVertices];
+		adjacencyMatrix = new byte[numVertices][numVertices];
 		adjacencyList = new LinkedList[numVertices];
 
 		// Counter for outer loop
-		int i = 0;
+		short i = 0;
 
 		// Loop through rows of matrix
 		while (i < adjacencyMatrix.length) {
 
 			// Create an empty list at the index
-			adjacencyList[i] = new LinkedList<Integer>();
+			adjacencyList[i] = new LinkedList<Short>();
 
 			// Counter for inner loop
-			int j = 0;
+			short j = 0;
 
 			// Loop through columns of each row of the matrix
 			while (j < adjacencyMatrix[i].length) {
@@ -142,8 +142,8 @@ public class Main {
 				String[] vertices = fileReader.next().split(",");
 
 				// Get coordinate from the string array
-				int x = Integer.parseInt(vertices[0]);
-				int y = Integer.parseInt(vertices[1]);
+				short x = Short.parseShort(vertices[0]);
+				short y = Short.parseShort(vertices[1]);
 
 				// Set indices in the array to 1, indicating a connection
 				adjacencyMatrix[x][y] = 1;
@@ -158,7 +158,7 @@ public class Main {
 			fileReader.close();
 
 			// Counter for loop
-			int i = 0;
+			short i = 0;
 
 			// Loop through array of lists
 			while (i < adjacencyList.length) {
@@ -176,26 +176,26 @@ public class Main {
 	}
 
 	/*
-	 * Sorts a LinkedList of Integers
+	 * Sorts a LinkedList of Shorts
 	 * 
 	 * Pre-Condition:
-	 * ~ in is a LinkedList of Integers
+	 * ~ in is a LinkedList of Shorts
 	 * 
 	 * Post-Condition:
 	 * ~ a sorted version of in is returned
 	 */
-	private static LinkedList<Integer> sortList(LinkedList<Integer> in) {
+	private static LinkedList<Short> sortList(LinkedList<Short> in) {
 		// Create a new list
-		LinkedList<Integer> out = new LinkedList<Integer>();
+		LinkedList<Short> out = new LinkedList<Short>();
 
 		// Loop until input list is empty
 		while (!in.isEmpty()) {
 
 			// Set index of minimum value
-			int min = 0;
+			short min = 0;
 
 			// Counter for loop
-			int i = 0;
+			short i = 0;
 
 			// Loop through input list
 			while (i < in.size()) {
@@ -234,10 +234,10 @@ public class Main {
 	private static void printMPV() {
 		// Set starting max to low value, every value is greater or equal to
 		// this
-		int max = 0;
+		short max = 0;
 
 		// Counter for loop
-		int i = 0;
+		short i = 0;
 
 		// Loop through array
 		while (i < adjacencyList.length) {
@@ -245,7 +245,7 @@ public class Main {
 			// Compare length of current list to max
 			if (adjacencyList[i].size() > max) {
 				// Update max
-				max = adjacencyList[i].size();
+				max = (short) adjacencyList[i].size();
 			}
 
 			// Increment counter
@@ -268,7 +268,7 @@ public class Main {
 				System.out.print(i);
 
 				// Counter for inner loop
-				int j = 0;
+				short j = 0;
 
 				// Traverse list
 				while (j < adjacencyList[i].size()) {
@@ -304,10 +304,10 @@ public class Main {
 	private static void printLPV() {
 		// Set starting max to high value, every value is less than or equal to
 		// this
-		int min = numVertices - 1;
+		short min = (short) (numVertices - 1);
 
 		// Counter for loop
-		int i = 0;
+		short i = 0;
 
 		// Loop through array
 		while (i < adjacencyList.length) {
@@ -315,7 +315,7 @@ public class Main {
 			// Compare length of current list to min
 			if (adjacencyList[i].size() < min) {
 				// Update min
-				min = adjacencyList[i].size();
+				min = (short) adjacencyList[i].size();
 			}
 
 			// Increment counter
@@ -338,7 +338,7 @@ public class Main {
 				System.out.print(i);
 
 				// Counter for inner loop
-				int j = 0;
+				short j = 0;
 
 				// Traverse list
 				while (j < adjacencyList[i].size()) {
@@ -374,7 +374,7 @@ public class Main {
 		String out = "X";
 
 		// Counter for loop
-		int i = 0;
+		short i = 0;
 
 		// Loop through vertices
 		while (i < numVertices) {
@@ -399,7 +399,7 @@ public class Main {
 			out += i;
 
 			// Counter for inner loop
-			int j = 0;
+			short j = 0;
 
 			// Loop through columns of each row
 			while (j < adjacencyMatrix[i].length) {
@@ -437,7 +437,7 @@ public class Main {
 		String out = "";
 
 		// Counter for outer loop
-		int i = 0;
+		short i = 0;
 
 		// Loop through array
 		while (i < adjacencyList.length) {
@@ -446,7 +446,7 @@ public class Main {
 			out += i;
 
 			// Counter for inner loop
-			int j = 0;
+			short j = 0;
 
 			// Loop through each list
 			while (j < adjacencyList[i].size()) {
@@ -488,7 +488,7 @@ public class Main {
 		if (parts.length != 0) {
 			
 			// Counter for while loops
-			int index = 0;
+			short index = 0;
 			
 			// Loop through all parts but the file name
 			while (index < parts.length - 1) {
